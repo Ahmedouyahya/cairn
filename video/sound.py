@@ -63,17 +63,28 @@ def music(seconds, seed=7):
 
 def _tone(f, dur, decay, amp, f_end=None):
     t = np.arange(int(dur * SR)) / SR
-    freq = f if f_end is None else np.linspace(f, f_end, len(t))
+    freq = np.full(len(t), float(f)) if f_end is None else np.linspace(f, f_end, len(t))
     phase = 2 * np.pi * np.cumsum(freq) / SR
     return np.sin(phase) * np.exp(-t * decay) * amp * _env(len(t), 0.004, 0.02)
 
 
+def _band_noise(n, lo, hi, rng):
+    """White noise band-limited to [lo, hi] Hz (FFT mask)."""
+    x = rng.normal(0, 1, n)
+    X = np.fft.rfft(x)
+    f = np.fft.rfftfreq(n, 1 / SR)
+    X[(f < lo) | (f > hi)] = 0
+    y = np.fft.irfft(X, n)
+    return y / (np.max(np.abs(y)) + 1e-9)
+
+
 def sfx(name, dur=0.0, seed=0):
+    """Light sound effects. Levels are relative to a voice peak of 0.5."""
     rng = np.random.default_rng(seed)
     if name == "tick":  # one soft key press
         n = int(0.018 * SR)
         x = rng.normal(0, 1, n) * np.exp(-np.arange(n) / SR * 260)
-        return np.diff(np.concatenate([[0], x])) * 0.06
+        return np.diff(np.concatenate([[0], x])) * 0.035
     if name == "type":  # a burst of key presses spread over `dur`
         total = np.zeros(int((dur + 0.05) * SR))
         t = 0.0
@@ -83,12 +94,33 @@ def sfx(name, dur=0.0, seed=0):
             total[i:i + len(k)] += k[: len(total) - i] * rng.uniform(0.6, 1.0)
             t += rng.uniform(0.045, 0.09)
         return total
-    if name == "pop":
-        return _tone(740, 0.16, 28, 0.10, f_end=520)
+    if name == "pop":  # something appears
+        return _tone(780, 0.14, 30, 0.13, f_end=560)
+    if name == "draw":  # writing an equation or drawing a line: a light pencil scratch
+        d = min(max(dur, 0.25), 1.4)
+        n = int(d * SR)
+        x = _band_noise(n, 2500, 7000, rng)
+        t = np.arange(n) / SR
+        wobble = 0.65 + 0.35 * np.sin(2 * np.pi * rng.uniform(5, 8) * t)  # stroke rhythm
+        return x * wobble * _env(n, 0.05, min(0.25, d / 2)) * 0.035
+    if name == "rise":  # a bar or chart grows
+        return _tone(330, 0.32, 7, 0.09, f_end=700)
+    if name == "swish":  # a transformation or a move
+        n = int(0.32 * SR)
+        x = _band_noise(n, 600, 3500, rng)
+        return x * np.sin(np.linspace(0, np.pi, n)) ** 2 * 0.06
+    if name == "fade":  # something leaves: very faint
+        n = int(0.4 * SR)
+        x = _band_noise(n, 300, 1500, rng)
+        return x * np.linspace(1, 0, n) ** 2 * _env(n, 0.03, 0.0) * 0.03
+    if name == "whoosh":  # scene change
+        n = int(0.8 * SR)
+        x = _band_noise(n, 200, 2500, rng)
+        return x * np.sin(np.linspace(0, np.pi, n)) ** 3 * 0.06
     if name == "chime":
-        return _tone(1318.5, 1.6, 2.6, 0.045) + _tone(1975.5, 1.6, 3.2, 0.025)
+        return _tone(1318.5, 1.6, 2.6, 0.06) + _tone(1975.5, 1.6, 3.2, 0.033)
     if name == "low":
-        return _tone(196, 0.35, 9, 0.12, f_end=165)
+        return _tone(196, 0.35, 9, 0.14, f_end=165)
     raise ValueError(name)
 
 

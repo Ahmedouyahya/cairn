@@ -98,17 +98,45 @@ class Narrated(MovingCameraScene):
         # starts[i] is when sentence i begins in the paced voice track
         # (measured from the audio by video/pace.py); starts[-1] is the end of speech.
         self.total, self.starts = d["total"], d["starts"]
-        self.cues = []
+        self.cues = [[0.0, "whoosh", 0.0]]  # a soft whoosh on every scene change
         frame = self.camera.frame
         rate = self.PUSH ** (1 / self.total)
         frame.add_updater(lambda m, dt: m.scale(rate ** dt))
         self.add(frame)
+
+    # Which sound goes with which kind of animation (first match wins).
+    SOUNDS = [
+        ("chime", ("Circumscribe",)),
+        ("type", ("AddTextLetterByLetter",)),
+        ("rise", ("GrowFromEdge", "GrowFromCenter")),
+        ("draw", ("Write", "Create", "DrawBorderThenFill")),
+        ("pop", ("FadeIn", "Indicate")),
+        ("swish", ("ReplacementTransform", "Transform", "_MethodAnimation")),
+        ("fade", ("FadeOut",)),
+    ]
+
+    @staticmethod
+    def _kinds(animations):
+        out = set()
+        for a in animations:
+            inner = getattr(a, "animations", None)
+            if inner:
+                out |= Narrated._kinds(inner)
+            out.add(type(a).__name__)
+        return out
 
     def play(self, *animations, **kwargs):
         # Only scale explicit animation timings. Scene.wait() also goes through
         # play() without a run_time keyword, and must keep its exact duration.
         if "run_time" in kwargs:
             kwargs["run_time"] *= self.SLOW
+            kinds = self._kinds(animations)
+            recent = self.cues and self.renderer.time - self.cues[-1][0] < 0.15
+            if not recent:
+                for sound, names in self.SOUNDS:
+                    if kinds & set(names):
+                        self.cue(sound, kwargs["run_time"])
+                        break
         super().play(*animations, **kwargs)
 
     def cue(self, name, dur=0.0):
