@@ -13,7 +13,7 @@
 //! * `hamming`: the Hamming weight of every coordinate of both halves.
 //!
 //! Part 2 (production parameters). The leakage budget guaranteed by
-//! Theorem 3 for arbitrary leakage functions:
+//! Theorem 7 for arbitrary leakage functions:
 //! `lambda_L + lambda_R <= (ell - 3) log2 p - 2 log2(1/eps)`.
 
 use std::collections::HashMap;

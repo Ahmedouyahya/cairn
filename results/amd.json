@@ -63,16 +63,16 @@
       "worst_case_probability": 0.5714285714285714
     },
     {
-      "bound_probability": 1.0,
-      "k": 4,
-      "p": 5,
-      "pairs_attaining_worst_case": 2500,
+      "bound_probability": 0.2727272727272727,
+      "k": 2,
+      "p": 11,
+      "pairs_attaining_worst_case": 199650,
       "pass": true,
-      "secret_error_pairs": 9765000,
-      "theorem_bound_k_plus_1": 5,
+      "secret_error_pairs": 1771440,
+      "theorem_bound_k_plus_1": 3,
       "tight": true,
-      "worst_case_passing_x": 5,
-      "worst_case_probability": 1.0
+      "worst_case_passing_x": 3,
+      "worst_case_probability": 0.2727272727272727
     }
   ]
 }

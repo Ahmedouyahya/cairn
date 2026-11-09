@@ -218,8 +218,17 @@ pub fn run() -> bool {
     rows.extend(row_b::<5>(3));
     rows.extend(row_b::<3>(4));
     for r in &rows {
+        let nz = r["tv_old_R_new_L_nonzero_values"]
+            .as_f64()
+            .map(|v| {
+                format!(
+                    "  [sigma,sigma' != 0: {v:.6} vs p^-(ell-1) = {:.6}]",
+                    r["p_pow_minus_ell_minus_1"].as_f64().unwrap()
+                )
+            })
+            .unwrap_or_default();
         println!(
-            "    {:<34} p={} ell={} {}  TV(old R, new L)={:.6}  TV(old L, new R)={:.6}",
+            "    {:<34} p={} ell={} {}  TV(old R, new L)={:.6}  TV(old L, new R)={:.6}{nz}",
             r["method"].as_str().unwrap(),
             r["p"],
             r["ell"],
@@ -228,7 +237,7 @@ pub fn run() -> bool {
             r["tv_old_L_new_R"].as_f64().unwrap()
         );
     }
-    // Claims checked (Lemma 5 in the paper):
+    // Claims checked (Lemma 10 in the paper):
     //  (i)   2-step refresh: old R and new L determine sigma (TV = 1);
     //  (ii)  3-step refresh, sigma != sigma' both non-zero: TV = p^-(ell-1) exactly;
     //  (iii) 3-step refresh, all pairs including sigma = 0: TV <= (p + 1) p^-(ell-1);

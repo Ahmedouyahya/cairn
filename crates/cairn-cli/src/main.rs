@@ -191,7 +191,7 @@ fn cmd_split(
     pad: usize,
 ) -> R<()> {
     if ell < 6 {
-        eprintln!("warning: ell < 6 gives no arbitrary-leakage guarantee (see paper, Theorem 3)");
+        eprintln!("warning: ell < 6 gives no arbitrary-leakage guarantee (see paper, Theorem 7)");
     }
     let secret = read_secret(input, generate)?;
     let params = Params { t, n, ell, min_limbs: pad };

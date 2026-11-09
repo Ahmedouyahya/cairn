@@ -1,0 +1,431 @@
+--- cairn_audit_mul (cairn_audit_mul)
+   63720:	push   r14
+   63722:	push   rbx
+   63723:	mov    rcx,rdx
+   63726:	mov    r11,QWORD PTR [rdi]
+   63729:	mov    r9,QWORD PTR [rsi]
+   6372c:	mov    r10,QWORD PTR [rsi+0x8]
+   63730:	mov    rax,r9
+   63733:	mul    r11
+   63736:	mov    r8,rdx
+   63739:	mov    rsi,rax
+   6373c:	mov    rax,r10
+   6373f:	mul    r11
+   63742:	mov    r11,rax
+   63745:	mov    rbx,rdx
+   63748:	mov    r14,QWORD PTR [rdi+0x8]
+   6374c:	mov    rax,r9
+   6374f:	mul    r14
+   63752:	mov    r9,rdx
+   63755:	mov    rdi,rax
+   63758:	add    rdi,r11
+   6375b:	adc    r9,rbx
+   6375e:	mov    rax,r10
+   63761:	mul    r14
+   63764:	add    rax,r9
+   63767:	adc    rdx,0x0
+   6376b:	add    rdi,r8
+   6376e:	adc    rax,0x0
+   63772:	adc    rdx,0x0
+   63776:	movabs r8,0x7fffffffffffffff
+   63780:	mov    r9,rdi
+   63783:	and    r9,r8
+   63786:	shr    rdi,0x3f
+   6378a:	add    rdi,rsi
+   6378d:	adc    r9,0x0
+   63791:	shld   rdx,rax,0x1
+   63796:	add    rax,rax
+   63799:	add    rax,rdi
+   6379c:	adc    rdx,r9
+   6379f:	and    r8,rdx
+   637a2:	shr    rdx,0x3f
+   637a6:	add    rdx,rax
+   637a9:	adc    r8,0x0
+   637ad:	mov    rax,rdx
+   637b0:	add    rax,0x1
+   637b4:	movabs rsi,0x8000000000000000
+   637be:	adc    rsi,r8
+   637c1:	mov    rdi,rsi
+   637c4:	shr    rdi,0x3f
+   637c8:	mov    BYTE PTR [rsp-0x2],dil
+   637cd:	lea    rdi,[rsp-0x2]
+   637d2:	movzx  edi,BYTE PTR [rsp-0x2]
+   637d7:	mov    BYTE PTR [rsp-0x1],dil
+   637dc:	lea    rdi,[rsp-0x1]
+   637e1:	movzx  edi,BYTE PTR [rsp-0x1]
+   637e6:	xor    r9d,r9d
+   637e9:	neg    rdi
+   637ec:	sbb    r9,r9
+   637ef:	xor    r8,rsi
+   637f2:	and    r8,r9
+   637f5:	xor    rdx,rax
+   637f8:	and    rdx,rdi
+   637fb:	xor    r8,rsi
+   637fe:	xor    rdx,rax
+   63801:	mov    QWORD PTR [rcx],rdx
+   63804:	mov    QWORD PTR [rcx+0x8],r8
+   63808:	pop    rbx
+   63809:	pop    r14
+   6380b:	ret
+   6380c:	int3
+   6380d:	int3
+   6380e:	int3
+   6380f:	int3
+--- cairn_audit_add_sub (cairn_audit_add_sub)
+   63560:	push   r15
+   63562:	push   r14
+   63564:	push   rbx
+   63565:	mov    r9,QWORD PTR [rsi]
+   63568:	mov    r10,QWORD PTR [rsi+0x8]
+   6356c:	mov    rsi,QWORD PTR [rdi]
+   6356f:	add    rsi,r9
+   63572:	mov    rdi,QWORD PTR [rdi+0x8]
+   63576:	adc    rdi,r10
+   63579:	movabs rax,0x7fffffffffffffff
+   63583:	mov    rcx,rdi
+   63586:	and    rcx,rax
+   63589:	shr    rdi,0x3f
+   6358d:	add    rdi,rsi
+   63590:	adc    rcx,0x0
+   63594:	mov    r11,rdi
+   63597:	add    r11,0x1
+   6359b:	movabs rsi,0x8000000000000000
+   635a5:	mov    rbx,rcx
+   635a8:	adc    rbx,rsi
+   635ab:	mov    r8,rbx
+   635ae:	shr    r8,0x3f
+   635b2:	mov    BYTE PTR [rsp-0x6],r8b
+   635b7:	lea    r8,[rsp-0x6]
+   635bc:	movzx  r8d,BYTE PTR [rsp-0x6]
+   635c2:	mov    BYTE PTR [rsp-0x5],r8b
+   635c7:	lea    r8,[rsp-0x5]
+   635cc:	movzx  r14d,BYTE PTR [rsp-0x5]
+   635d2:	xor    r8d,r8d
+   635d5:	neg    r14
+   635d8:	mov    r15d,0x0
+   635de:	sbb    r15,r15
+   635e1:	xor    rcx,rbx
+   635e4:	and    rcx,r15
+   635e7:	xor    rdi,r11
+   635ea:	and    rdi,r14
+   635ed:	xor    rcx,rbx
+   635f0:	xor    rdi,r11
+   635f3:	mov    r11,r9
+   635f6:	neg    r11
+   635f9:	mov    r14d,0x0
+   635ff:	sbb    r14,r10
+   63602:	xor    r9,r11
+   63605:	mov    rbx,rax
+   63608:	sub    rbx,r10
+   6360b:	mov    r10,r14
+   6360e:	shr    r10,0x3f
+   63612:	mov    BYTE PTR [rsp-0x4],r10b
+   63617:	lea    r10,[rsp-0x4]
+   6361c:	movzx  r10d,BYTE PTR [rsp-0x4]
+   63622:	mov    BYTE PTR [rsp-0x3],r10b
+   63627:	lea    r10,[rsp-0x3]
+   6362c:	movzx  r10d,BYTE PTR [rsp-0x3]
+   63632:	neg    r10
+   63635:	mov    r15d,0x0
+   6363b:	sbb    r15,r15
+   6363e:	xor    rbx,r14
+   63641:	and    rbx,r15
+   63644:	not    r9
+   63647:	and    r9,r10
+   6364a:	xor    rbx,r14
+   6364d:	xor    r9,r11
+   63650:	sub    rdi,r9
+   63653:	sbb    rcx,rbx
+   63656:	add    rdi,0xffffffffffffffff
+   6365a:	adc    rcx,rax
+   6365d:	and    rax,rcx
+   63660:	shr    rcx,0x3f
+   63664:	add    rcx,rdi
+   63667:	adc    rax,0x0
+   6366b:	mov    rdi,rcx
+   6366e:	add    rdi,0x1
+   63672:	adc    rsi,rax
+   63675:	mov    r9,rsi
+   63678:	shr    r9,0x3f
+   6367c:	mov    BYTE PTR [rsp-0x2],r9b
+   63681:	lea    r9,[rsp-0x2]
+   63686:	movzx  r9d,BYTE PTR [rsp-0x2]
+   6368c:	mov    BYTE PTR [rsp-0x1],r9b
+   63691:	lea    r9,[rsp-0x1]
+   63696:	movzx  r9d,BYTE PTR [rsp-0x1]
+   6369c:	neg    r9
+   6369f:	sbb    r8,r8
+   636a2:	xor    rax,rsi
+   636a5:	and    rax,r8
+   636a8:	xor    rcx,rdi
+   636ab:	and    rcx,r9
+   636ae:	xor    rax,rsi
+   636b1:	xor    rcx,rdi
+   636b4:	mov    QWORD PTR [rdx],rcx
+   636b7:	mov    QWORD PTR [rdx+0x8],rax
+   636bb:	pop    rbx
+   636bc:	pop    r14
+   636be:	pop    r15
+   636c0:	ret
+   636c1:	int3
+   636c2:	int3
+   636c3:	int3
+   636c4:	int3
+   636c5:	int3
+   636c6:	int3
+   636c7:	int3
+   636c8:	int3
+   636c9:	int3
+   636ca:	int3
+   636cb:	int3
+   636cc:	int3
+   636cd:	int3
+   636ce:	int3
+   636cf:	int3
+--- cairn_audit_select (cairn_audit_select)
+   63810:	and    dil,0x1
+   63814:	mov    BYTE PTR [rsp-0x2],dil
+   63819:	lea    rax,[rsp-0x2]
+   6381e:	mov    rax,QWORD PTR [rdx]
+   63821:	mov    rdi,QWORD PTR [rdx+0x8]
+   63825:	movdqa xmm0,XMMWORD PTR [rdx]
+   63829:	pxor   xmm0,XMMWORD PTR [rsi]
+   6382d:	movzx  edx,BYTE PTR [rsp-0x2]
+   63832:	mov    BYTE PTR [rsp-0x1],dl
+   63836:	lea    rdx,[rsp-0x1]
+   6383b:	movzx  edx,BYTE PTR [rsp-0x1]
+   63840:	xor    esi,esi
+   63842:	neg    rdx
+   63845:	sbb    rsi,rsi
+   63848:	movq   r8,xmm0
+   6384d:	and    r8,rdx
+   63850:	xor    r8,rax
+   63853:	pshufd xmm0,xmm0,0xee
+   63858:	movq   rax,xmm0
+   6385d:	and    rax,rsi
+   63860:	xor    rax,rdi
+   63863:	mov    QWORD PTR [rcx],r8
+   63866:	mov    QWORD PTR [rcx+0x8],rax
+   6386a:	ret
+   6386b:	int3
+   6386c:	int3
+   6386d:	int3
+   6386e:	int3
+   6386f:	int3
+--- cairn_audit_amd_verify (cairn_audit_amd_verify)
+   636d0:	push   rbx
+   636d1:	sub    rsp,0x10
+   636d5:	mov    rbx,rdi
+   636d8:	mov    rdx,QWORD PTR [rdi+0x30]
+   636dc:	mov    rcx,QWORD PTR [rdi+0x38]
+   636e0:	mov    esi,0x3
+   636e5:	call   1c0a0 <_RINvNtCsaJPfrreOXI2_10cairn_core3amd3tagNtNtB4_5field5Fp127ECsiWmgndFOW0M_9cairn_lab>
+   636ea:	xor    rdx,QWORD PTR [rbx+0x48]
+   636ee:	xor    rax,QWORD PTR [rbx+0x40]
+   636f2:	or     rax,rdx
+   636f5:	setne  BYTE PTR [rsp+0xf]
+   636fa:	lea    rax,[rsp+0xf]
+   636ff:	movzx  eax,BYTE PTR [rsp+0xf]
+   63704:	xor    al,0x1
+   63706:	mov    BYTE PTR [rsp+0xe],al
+   6370a:	lea    rax,[rsp+0xe]
+   6370f:	cmp    BYTE PTR [rsp+0xe],0x1
+   63714:	sete   al
+   63717:	add    rsp,0x10
+   6371b:	pop    rbx
+   6371c:	ret
+   6371d:	int3
+   6371e:	int3
+   6371f:	int3
+---   -> amd::tag (callee) (_RINvNtCsaJPfrreOXI2_10cairn_core3amd3tagNtNtB4_5field5Fp127ECsiWmgndFOW0M_9cairn_lab)
+   1c0a0:	push   rbp
+   1c0a1:	push   r15
+   1c0a3:	push   r14
+   1c0a5:	push   r13
+   1c0a7:	push   r12
+   1c0a9:	push   rbx
+   1c0aa:	mov    r8,rdx
+   1c0ad:	movabs rbp,0x8000000000000000
+   1c0b7:	mov    r13d,0x1
+   1c0bd:	movabs r12,0x7fffffffffffffff
+   1c0c7:	mov    r15,0xffffffffffffffff
+   1c0ce:	test   rsi,rsi
+   1c0d1:	je     1c25f <_RINvNtCsaJPfrreOXI2_10cairn_core3amd3tagNtNtB4_5field5Fp127ECsiWmgndFOW0M_9cairn_lab+0x1bf>
+   1c0d7:	shl    rsi,0x4
+   1c0db:	mov    r10,r8
+   1c0de:	mov    r11,rcx
+   1c0e1:	mov    QWORD PTR [rsp-0x10],rcx
+   1c0e6:	mov    QWORD PTR [rsp-0x8],rdi
+   1c0eb:	nop    DWORD PTR [rax+rax*1+0x0]
+   1c0f0:	mov    rax,r10
+   1c0f3:	mul    r8
+   1c0f6:	mov    r14,rdx
+   1c0f9:	mov    rbx,rax
+   1c0fc:	mov    rax,r11
+   1c0ff:	mul    r8
+   1c102:	mov    r9,0xffffffffffffffff
+   1c109:	mov    r15,rdx
+   1c10c:	mov    rdi,r12
+   1c10f:	mov    r12,rax
+   1c112:	mov    rax,r10
+   1c115:	mov    rcx,QWORD PTR [rsp-0x10]
+   1c11a:	mul    rcx
+   1c11d:	mov    r13,rdx
+   1c120:	mov    r10,rax
+   1c123:	add    r10,r12
+   1c126:	adc    r13,r15
+   1c129:	mov    rax,r11
+   1c12c:	mul    rcx
+   1c12f:	add    rax,r13
+   1c132:	mov    r13d,0x1
+   1c138:	adc    rdx,0x0
+   1c13c:	add    r10,r14
+   1c13f:	adc    rax,0x0
+   1c143:	adc    rdx,0x0
+   1c147:	mov    rcx,QWORD PTR [rsp-0x8]
+   1c14c:	mov    r11,QWORD PTR [rcx+rsi*1-0x10]
+   1c151:	mov    r14,r10
+   1c154:	and    r14,rdi
+   1c157:	and    rbx,r9
+   1c15a:	shr    r10,0x3f
+   1c15e:	add    r10,rbx
+   1c161:	adc    r14,0x0
+   1c165:	mov    rbx,QWORD PTR [rcx+rsi*1-0x8]
+   1c16a:	shld   rdx,rax,0x1
+   1c16f:	add    rax,rax
+   1c172:	add    rax,r10
+   1c175:	adc    rdx,r14
+   1c178:	mov    r10,rdx
+   1c17b:	and    r10,rdi
+   1c17e:	and    rax,r9
+   1c181:	shr    rdx,0x3f
+   1c185:	add    rdx,rax
+   1c188:	adc    r10,0x0
+   1c18c:	mov    rax,rdx
+   1c18f:	add    rax,r13
+   1c192:	mov    r14,r10
+   1c195:	adc    r14,rbp
+   1c198:	mov    r15,r14
+   1c19b:	shr    r15,0x3f
+   1c19f:	mov    BYTE PTR [rsp-0x16],r15b
+   1c1a4:	lea    r9,[rsp-0x16]
+   1c1a9:	movzx  r15d,BYTE PTR [rsp-0x16]
+   1c1af:	mov    BYTE PTR [rsp-0x15],r15b
+   1c1b4:	lea    r9,[rsp-0x15]
+   1c1b9:	movzx  r15d,BYTE PTR [rsp-0x15]
+   1c1bf:	neg    r15
+   1c1c2:	mov    r12d,0x0
+   1c1c8:	sbb    r12,r12
+   1c1cb:	xor    r10,r14
+   1c1ce:	and    r10,r12
+   1c1d1:	mov    r12,rdi
+   1c1d4:	xor    rdx,rax
+   1c1d7:	and    rdx,r15
+   1c1da:	mov    r15,0xffffffffffffffff
+   1c1e1:	xor    r10,r14
+   1c1e4:	xor    rdx,rax
+   1c1e7:	add    rdx,r11
+   1c1ea:	adc    r10,rbx
+   1c1ed:	mov    r11,r10
+   1c1f0:	and    r11,rdi
+   1c1f3:	and    rdx,r15
+   1c1f6:	shr    r10,0x3f
+   1c1fa:	add    r10,rdx
+   1c1fd:	adc    r11,0x0
+   1c201:	mov    rax,r10
+   1c204:	add    rax,r13
+   1c207:	mov    rdx,r11
+   1c20a:	adc    rdx,rbp
+   1c20d:	mov    rbx,rdx
+   1c210:	shr    rbx,0x3f
+   1c214:	mov    BYTE PTR [rsp-0x14],bl
+   1c218:	lea    rcx,[rsp-0x14]
+   1c21d:	movzx  ebx,BYTE PTR [rsp-0x14]
+   1c222:	mov    BYTE PTR [rsp-0x13],bl
+   1c226:	lea    rcx,[rsp-0x13]
+   1c22b:	movzx  ebx,BYTE PTR [rsp-0x13]
+   1c230:	neg    rbx
+   1c233:	mov    r14d,0x0
+   1c239:	sbb    r14,r14
+   1c23c:	xor    r11,rdx
+   1c23f:	and    r11,r14
+   1c242:	xor    r10,rax
+   1c245:	and    r10,rbx
+   1c248:	xor    r11,rdx
+   1c24b:	xor    r10,rax
+   1c24e:	add    rsi,0xfffffffffffffff0
+   1c252:	jne    1c0f0 <_RINvNtCsaJPfrreOXI2_10cairn_core3amd3tagNtNtB4_5field5Fp127ECsiWmgndFOW0M_9cairn_lab+0x50>
+   1c258:	mov    rcx,QWORD PTR [rsp-0x10]
+   1c25d:	jmp    1c265 <_RINvNtCsaJPfrreOXI2_10cairn_core3amd3tagNtNtB4_5field5Fp127ECsiWmgndFOW0M_9cairn_lab+0x1c5>
+   1c25f:	mov    r11,rcx
+   1c262:	mov    r10,r8
+   1c265:	mov    rax,r10
+   1c268:	mul    r8
+   1c26b:	mov    rbx,rdx
+   1c26e:	mov    rsi,rax
+   1c271:	mov    rax,r11
+   1c274:	mul    r8
+   1c277:	mov    r8,rdx
+   1c27a:	mov    r14,rax
+   1c27d:	mov    rax,r10
+   1c280:	mul    rcx
+   1c283:	mov    r9,rax
+   1c286:	add    r9,r14
+   1c289:	adc    r8,rdx
+   1c28c:	mov    rax,r11
+   1c28f:	mul    rcx
+   1c292:	add    rax,r8
+   1c295:	adc    rdx,0x0
+   1c299:	add    r9,rbx
+   1c29c:	adc    rax,0x0
+   1c2a0:	adc    rdx,0x0
+   1c2a4:	mov    rcx,r9
+   1c2a7:	and    rcx,r12
+   1c2aa:	and    rsi,r15
+   1c2ad:	shr    r9,0x3f
+   1c2b1:	add    r9,rsi
+   1c2b4:	adc    rcx,0x0
+   1c2b8:	shld   rdx,rax,0x1
+   1c2bd:	add    rax,rax
+   1c2c0:	add    rax,r9
+   1c2c3:	adc    rcx,rdx
+   1c2c6:	and    r12,rcx
+   1c2c9:	and    rax,r15
+   1c2cc:	shr    rcx,0x3f
+   1c2d0:	add    rax,rcx
+   1c2d3:	adc    r12,0x0
+   1c2d7:	add    r13,rax
+   1c2da:	adc    rbp,r12
+   1c2dd:	mov    rcx,rbp
+   1c2e0:	shr    rcx,0x3f
+   1c2e4:	mov    BYTE PTR [rsp-0x12],cl
+   1c2e8:	lea    rcx,[rsp-0x12]
+   1c2ed:	movzx  ecx,BYTE PTR [rsp-0x12]
+   1c2f2:	mov    BYTE PTR [rsp-0x11],cl
+   1c2f6:	lea    rcx,[rsp-0x11]
+   1c2fb:	movzx  ecx,BYTE PTR [rsp-0x11]
+   1c300:	xor    edx,edx
+   1c302:	neg    rcx
+   1c305:	sbb    rdx,rdx
+   1c308:	xor    r12,rbp
+   1c30b:	and    r12,rdx
+   1c30e:	xor    rax,r13
+   1c311:	and    rax,rcx
+   1c314:	xor    r12,rbp
+   1c317:	xor    rax,r13
+   1c31a:	mov    rdx,r12
+   1c31d:	pop    rbx
+   1c31e:	pop    r12
+   1c320:	pop    r13
+   1c322:	pop    r14
+   1c324:	pop    r15
+   1c326:	pop    rbp
+   1c327:	ret
+   1c328:	int3
+   1c329:	int3
+   1c32a:	int3
+   1c32b:	int3
+   1c32c:	int3
+   1c32d:	int3
+   1c32e:	int3
+   1c32f:	int3

@@ -5,35 +5,35 @@
     "note": "median of many runs, single core",
     "rows": [
       {
-        "median_ns": 23.0,
+        "median_ns": 25.0,
         "operation": "field multiplication"
       },
       {
-        "median_ns": 2262.0,
+        "median_ns": 2201.0,
         "operation": "field inversion (Fermat, 127-bit exponent)"
       },
       {
-        "median_ns": 69516.0,
+        "median_ns": 63606.0,
         "operation": "split 32-byte key, 3-of-5, ell=8"
       },
       {
-        "median_ns": 10291.0,
+        "median_ns": 9280.0,
         "operation": "combine 3 shares (verify + decode)"
       },
       {
-        "median_ns": 50215.0,
+        "median_ns": 45894.0,
         "operation": "combine 4 shares, 1 cheater (identify)"
       },
       {
-        "median_ns": 139258.0,
+        "median_ns": 133322.0,
         "operation": "proactive refresh of all 5 shares"
       },
       {
-        "median_ns": 16694.0,
+        "median_ns": 15918.0,
         "operation": "local re-randomisation of one share"
       },
       {
-        "median_ns": 29686.0,
+        "median_ns": 28202.0,
         "operation": "generate deltas + apply one delta"
       }
     ]

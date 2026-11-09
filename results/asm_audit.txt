@@ -1,0 +1,10 @@
+cairn_audit_mul                    instructions=72   conditional_jumps=0  div=0
+cairn_audit_add_sub                instructions=110  conditional_jumps=0  div=0
+cairn_audit_select                 instructions=29   conditional_jumps=0  div=0
+cairn_audit_amd_verify             instructions=24   conditional_jumps=0  div=0
+  -> amd::tag (callee)             instructions=191  conditional_jumps=2  div=0
+      test   rsi,rsi
+      je     1c25f 
+--
+      add    rsi,0xfffffffffffffff0
+      jne    1c0f0 

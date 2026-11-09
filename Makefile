@@ -3,9 +3,9 @@ CARGO ?= cargo
 PY    ?= python3 -I
 LAB   := target/release/cairn-lab
 
-.PHONY: verify build lint test kat lab attacks ctgrind miri figures paper nodash clean
+.PHONY: verify build lint test kat lab attacks ctgrind asm miri figures paper nodash clean
 
-verify: lint build test kat lab attacks ctgrind figures paper nodash
+verify: lint build test kat lab attacks ctgrind asm figures paper nodash
 	@echo "== all checks passed"
 
 build:
@@ -32,6 +32,9 @@ attacks: build
 
 ctgrind: build
 	tools/ctgrind.sh
+
+asm: build
+	tools/asm_audit.sh
 
 miri:
 	PROPTEST_CASES=8 PROPTEST_DISABLE_FAILURE_PERSISTENCE=1 MIRIFLAGS=-Zmiri-disable-isolation \

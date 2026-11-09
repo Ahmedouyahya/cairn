@@ -10,7 +10,7 @@
 //! * Bounded leakage from *both* halves is tolerated: with `lambda_L` and
 //!   `lambda_R` bits of arbitrary leakage from each half, the advantage of
 //!   any distinguisher is at most `2^((lambda_L + lambda_R)/2) * p^((3 - ell)/2)`
-//!   (Theorem 3 in the paper, proved with the inner-product two-source
+//!   (Theorem 7 in the paper, proved with the inner-product two-source
 //!   extractor). For `ell = 8` and `p = 2^127 - 1` this allows 379 bits of
 //!   leakage at advantage `2^-128`.
 //!
@@ -37,7 +37,7 @@
 //! it computes `sigma` exactly. We found this in our own lab
 //! (`cairn-lab refresh`). With the third half-step, any old half and any new
 //! half are within statistical distance `p^-(ell-1)` of independent of
-//! `sigma` (Lemma 5 in the paper), which the lab checks exactly at toy sizes.
+//! `sigma` (Lemma 10 in the paper), which the lab checks exactly at toy sizes.
 //!
 //! The refresh uses no inversion, no branch and no secret-dependent index.
 
