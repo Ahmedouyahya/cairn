@@ -15,6 +15,8 @@ cairn=$?
 valgrind --error-exitcode=42 --track-origins=yes "$LAB" ctgrind-naive > results/ctgrind-naive.txt 2>&1
 naive=$?
 set -e
+# Keep logs free of local paths.
+sed -i "s|$PWD/||g" results/ctgrind-cairn.txt results/ctgrind-naive.txt
 grep "ERROR SUMMARY" results/ctgrind-cairn.txt | sed 's/^/  cairn: /'
 grep "ERROR SUMMARY" results/ctgrind-naive.txt | sed 's/^/  naive: /'
 if [ "$cairn" -eq 0 ] && [ "$naive" -eq 42 ]; then

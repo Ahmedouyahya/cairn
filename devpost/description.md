@@ -8,7 +8,7 @@ Shamir secret sharing is perfect *as mathematics*: any \(t\) of \(n\) shares rec
 - **W4, during reconstruction:** variable-time arithmetic leaks through timing and cache channels.
 - **W5, under manipulation:** one cheating custodian submits a modified share; everyone else recovers a wrong key while she computes the right one (Tompa and Woll, 1988).
 
-We wanted one algorithm that closes all five, using only number theory and linear algebra, with **no computational assumption at all**: no AES, no hash, no discrete logarithm, no pre-existing cipher. Every guarantee had to be a theorem with an explicit bound, and every theorem had to be checked by a computation anyone can rerun.
+We wanted one algorithm that addresses all five, using only number theory and linear algebra, with **no computational assumption at all**: no AES, no hash, no discrete logarithm, no pre-existing cipher. Every guarantee had to be a theorem with an explicit bound, and every theorem had to be checked by a computation anyone can rerun.
 
 ## What it does
 
@@ -88,7 +88,7 @@ The coordinate loop is outside and the share loop inside, so no individual share
   - leakage: exact advantage tables.
 - **Side-channel evidence:**
   - a dudect-style fixed-versus-random Welch test: CAIRN max \(|t|\le 2.1\), while a textbook baseline on the same harness reaches \(|t|\approx 12{,}670\);
-  - ctgrind under Valgrind;
+  - ctgrind under Valgrind: 0 secret-dependent branches or addresses in CAIRN, 2,289 errors in the baseline (the positive control);
   - an assembly audit: field multiplication compiles to 72 instructions with **0 conditional jumps and 0 divisions**;
   - Miri for undefined behaviour.
 - **Attack scripts** run against the real binary. Tompa-Woll steals the key from plain Shamir and fails against CAIRN; a mobile adversary fails across refreshes.
@@ -102,7 +102,7 @@ The coordinate loop is outside and the share loop inside, so no individual share
 
 ## Accomplishments that we're proud of
 
-- Unconditional security against all five windows, with explicit bounds and full proofs.
+- Information-theoretic guarantees for all five windows, each with an explicit bound and a full proof under a stated threat model.
 - A new inversion-free refresh from skew-symmetric matrices, with an exact cross-epoch analysis.
 - Every claim has a reproducible measurement, and the paper's numbers are generated, not typed.
 - Byte-for-byte agreement between two independent implementations.
