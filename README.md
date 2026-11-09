@@ -8,7 +8,7 @@ One stone of a cairn says nothing; enough stones mark the way. CAIRN splits a ma
 |---|---|---|---|---|
 | **At rest** | stolen share files | Vandermonde sharing | `t-1` shares are independent of the key (perfect secrecy) | exhaustive enumeration, 0 violations in 77,525 dealings |
 | **Over time** | a patient attacker collects `t` shares over months | zero-polynomial proactive refresh | a mobile adversary learns nothing | `attacks/mobile_adversary.py` |
-| **In memory** | cold boot, swap, partial memory disclosure | split-state storage `sigma = <L, R>` | advantage `<= 2^-128` under 379 bits of arbitrary leakage per coordinate | exact leakage tables |
+| **In memory** | cold boot, swap, partial memory disclosure | split-state storage `sigma = <L, R>` | advantage `<= 5 * 2^-128` under 378 bits of arbitrary leakage from a share (32-byte key) | exact leakage tables |
 | **During reconstruction** | timing and cache side channels | constant-time combine | no secret-dependent branch, address or latency | dudect `max|t| <= 2.1` (naive: 12,670), ctgrind, assembly audit |
 | **Under manipulation** | a cheating custodian steals the key (Tompa-Woll) | AMD armor | wrong key accepted with probability `<= (k+1)/p ~ 2^-125` | exhaustive and tight over 21.4 M secret/error pairs |
 

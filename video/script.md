@@ -19,7 +19,7 @@
 > "We work in the field of integers modulo 2 to the 127 minus 1. Because 2 to the 127 is 1 in this field, reduction is a shift and an add, and nothing ever divides a secret.
 > Layer 2 is an algebraic manipulation detection tag: tau equals x to the k plus 2, plus the sum of s_i x to the i. Any error a cheater adds turns acceptance into a polynomial equation of degree at most k plus 1, so it passes with probability 2 to the minus 125.
 > Layer 3 shares the armored key with a Vandermonde matrix: any t minus 1 shares are uniformly random.
-> Layer 4 never stores a share value. It stores two vectors L and R in separate memory regions whose inner product is the value. By Lindsey's lemma, an attacker can leak 379 bits from them and still gain at most 2 to the minus 128.
+> Layer 4 never stores a share value. It stores two vectors L and R in separate memory regions whose inner product is the value. By Lindsey's lemma, an attacker can leak 378 bits from them and still gain essentially nothing: 2 to the minus 128 per coordinate.
 > Layer 5 refreshes with random skew-symmetric matrices. A times R is always orthogonal to R, so the value never changes and never has to be computed."
 
 ## 1:05 to 1:40, the tool (demo scenes 1 and 2)

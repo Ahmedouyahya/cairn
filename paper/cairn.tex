@@ -65,12 +65,12 @@
 
 \begin{abstract}
 \noindent
-A master key is exposed through five different windows: \emph{at rest} (a stolen backup), \emph{over time} (an attacker who collects pieces patiently), \emph{in memory} (cold boot, swap, partial memory disclosure), \emph{during reconstruction} (timing and cache side channels) and \emph{under manipulation} (a custodian who lies). We present \cairn{}, a $t$-of-$n$ custody scheme that closes all five with one algebraic toolbox and \emph{no computational assumption at all}: no block cipher, no hash function, no discrete logarithm. The key is encoded into the Mersenne field $\Fp$, $p=2^{127}-1$, armored with an algebraic manipulation detection tag, shared with a Vandermonde system, and every share coordinate is stored as an inner product $\ip{L}{R}$ of two vectors kept in separate memory regions. Shares are re-randomized by Gibbs steps built from random skew-symmetric matrices, and moved to fresh sharings by zero-polynomial refreshes. We prove perfect secrecy against $t-1$ custodians, tamper detection with error at most $(k+1)/p\approx 2^{-125}$, resilience to $379$ bits of arbitrary split-state leakage per share coordinate at advantage $2^{-128}$, and security against mobile adversaries. We report our own cryptanalysis, including a cross-epoch attack on the natural two-step refresh that we found and fixed. Every claim is backed by an exact or statistical experiment that \code{make verify} reproduces: exhaustive enumeration in small fields (\SecrecyDealings{} dealings, \AmdPairs{} secret/error pairs), byte-identical agreement with an independent reference implementation, a fixed-versus-random timing test (CAIRN $|t|\le\DudectMulCairn$, textbook baseline $|t|$ up to \DudectMulNaive{}), an assembly audit and memory-safety checks. The implementation is a \code{no\_std}, \code{unsafe}-free Rust core with a hardened command line tool.
+A master key is exposed through five different windows: \emph{at rest} (a stolen backup), \emph{over time} (an attacker who collects pieces patiently), \emph{in memory} (cold boot, swap, partial memory disclosure), \emph{during reconstruction} (timing and cache side channels) and \emph{under manipulation} (a custodian who lies). We present \cairn{}, a $t$-of-$n$ custody scheme that closes all five with one algebraic toolbox and \emph{no computational assumption at all}: no block cipher, no hash function, no discrete logarithm. The key is encoded into the Mersenne field $\Fp$, $p=2^{127}-1$, armored with an algebraic manipulation detection tag, shared with a Vandermonde system, and every share coordinate is stored as an inner product $\ip{L}{R}$ of two vectors kept in separate memory regions. Shares are re-randomized by Gibbs steps built from random skew-symmetric matrices, and moved to fresh sharings by zero-polynomial refreshes. We prove perfect secrecy against $t-1$ custodians, tamper detection with error at most $(k+1)/p\approx 2^{-125}$, resilience to $378$ bits of arbitrary split-state leakage from a share coordinate at advantage $2^{-128}$, and security against mobile adversaries. We report our own cryptanalysis, including a cross-epoch attack on the natural two-step refresh that we found and fixed. Every claim is backed by an exact or statistical experiment that \code{make verify} reproduces: exhaustive enumeration in small fields (\SecrecyDealings{} dealings, \AmdPairs{} secret/error pairs), byte-identical agreement with an independent reference implementation, a fixed-versus-random timing test (CAIRN $|t|\le\DudectMulCairn$, textbook baseline $|t|$ up to \DudectMulNaive{}), an assembly audit and memory-safety checks. The implementation is a \code{no\_std}, \code{unsafe}-free Rust core with a hardened command line tool.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
 
-Whoever holds a master key holds everything it protects: a signing key for software releases, the root of a password manager, the key-encryption key of a database. The classical answer to ``who should hold it'' is Shamir secret sharing~\cite{shamir79}: split the key into $n$ shares so that any $t$ recover it and any $t-1$ reveal nothing. Shamir's scheme is perfect, but only \emph{as mathematics}. Deployed, it leaves five windows open, and each has been exploited in practice or in the literature.
+Whoever holds a master key holds everything it protects: a signing key for software releases, the root of a password manager, the key-encryption key of a database. The classical answer to ``who should hold it'' is threshold secret sharing (Shamir~\cite{shamir79}, Blakley~\cite{blakley79}): split the key into $n$ shares so that any $t$ recover it and any $t-1$ reveal nothing. Shamir's scheme is perfect, but only \emph{as mathematics}. Deployed, it leaves five windows open, and each has been exploited in practice or in the literature.
 
 \begin{enumerate}[leftmargin=*,label=\textbf{W\arabic*.},itemsep=1pt]
 \item \textbf{At rest.} Shares are files; files get copied.
@@ -96,7 +96,7 @@ Window & Layer & Guarantee & Evidence\\
 \midrule
 W1 at rest & L3 Vandermonde sharing & $t-1$ shares independent of the key (\cref{thm:secrecy}) & exhaustive, \cref{tab:secrecy}\\
 W2 over time & L5 zero-sharing refresh & mobile adversary learns nothing (\cref{thm:mobile}) & demo, \cref{sec:attack-mobile}\\
-W3 in memory & L4 split-state storage & $2^{-128}$ advantage under 379 bits of leakage (\cref{thm:leakage}) & exact, \cref{fig:leakage}\\
+W3 in memory & L4 split-state storage & $\le 2^{-128}$ per coordinate under 378 bits of leakage (\cref{thm:leakage}) & exact, \cref{fig:leakage}\\
 W3 over refreshes & L4 skew-symmetric refresh & cross-epoch advantage $p^{-(\ell-1)}$ (\cref{lem:refresh}) & exact, \cref{tab:refresh}\\
 W4 reconstruction & L6 constant-time combine & no secret-dependent branch, address or latency & dudect, ctgrind, asm\\
 W5 manipulation & L2 AMD armor & wrong key accepted w.p.\ $\le (k+1)/p$ (\cref{thm:robust}) & exhaustive, \cref{tab:amd}\\
@@ -153,7 +153,7 @@ The tag is evaluated by Horner's rule as $x\cdot(s_1+x(s_2+\dots+x(s_k+x\cdot x)
 
 \paragraph{L4, split-state storage.} Each coordinate $\sigma_{j,c}$ is stored as a pair $(L,R)\in\F^\ell\times\F^\ell$ with $\ip{L}{R}=\sigma_{j,c}$, produced by \cref{alg:ipenc}. All $L$ vectors of a share live in one memory region and file section, all $R$ vectors in another.
 
-\paragraph{L5, refresh.} \Cref{alg:refresh} re-randomizes a pair without computing its value; \cref{alg:proactive} moves all custodians to a fresh sharing of the same key.
+\paragraph{L5, refresh.} \Cref{alg:refresh} re-randomizes a pair without computing its value; \cref{alg:proactive}, in the spirit of proactive secret sharing~\cite{herzberg95}, moves all custodians to a fresh sharing of the same key.
 
 \paragraph{L6, combination.} \Cref{alg:combine} interpolates at zero in constant time and checks the AMD tag. Lagrange coefficients depend only on the public indices.
 
@@ -267,7 +267,7 @@ Since $Z$ is uniform, $\TV((\Lambda,Z),(\Lambda,U))=\frac1p\sum_\sigma\TV(\Lambd
 \end{proof}
 
 \begin{corollary}\label{cor:leakage}
-With $p=2^{127}-1$ and $\ell=8$, any $\lambda_L+\lambda_R\le 379$ bits of leakage per coordinate give advantage at most $2^{-128}$; a full share with $D$ coordinates, stored in two regions, tolerates the same per-coordinate budget at advantage $D\cdot2^{-128}$ (hybrid over coordinates). Leakage from one half alone is harmless without limit: $L$ is sampled independently of $\sigma$, and $R$ alone is within $p^{-(\ell-1)}$ of independent.
+With $p=2^{127}-1$ and $\ell=8$, any $\lambda_L+\lambda_R\le 378$ bits of leakage give advantage at most $2^{-128}$ for one coordinate. A full share with $D$ coordinates, whose $L$ halves share one memory region and $R$ halves another, tolerates $\lambda_L+\lambda_R\le378$ bits leaked from the two regions in total at advantage $D\cdot2^{-128}$: a hybrid over coordinates, in which the reduction samples the other coordinates itself and hard-wires them into the leakage functions, so each step faces the same total budget. Leakage from one half alone is harmless without limit: $L$ is sampled independently of $\sigma$, and $R$ alone is within $p^{-(\ell-1)}$ of independent.
 \end{corollary}
 
 \subsection{Leakage across refreshes}
@@ -314,7 +314,7 @@ Exhaustive search with $t-1$ shares & every key equally likely; nothing to searc
 Tompa-Woll cheating~\cite{tompa88} & detected ($\le2^{-125}$), cheater identified with $t+1$ shares & \cref{thm:robust}, \cref{sec:attack-tw}\\
 Mobile adversary~\cite{ostrovsky91} & mixed epochs refused, forged epochs caught by AMD & \cref{thm:mobile}, \cref{sec:attack-mobile}\\
 Old $R$ + new $L$ (two-step refresh) & \textbf{complete break of the naive design}; fixed by a third half-step & \cref{lem:refresh}\\
-Partial memory disclosure & $2^{-128}$ up to 379 bits per coordinate; one half alone useless & \cref{thm:leakage}, \cref{fig:leakage}\\
+Partial memory disclosure & $D\cdot2^{-128}$ up to 378 bits per share; one half alone useless & \cref{thm:leakage}, \cref{fig:leakage}\\
 Timing / cache & no leakage detected ($|t|\le\DudectMulCairn$ over $2\cdot10^6$ traces) & \cref{fig:dudect}\\
 Index forgery, fake dealing & impossible to prevent without keys; roster required & \cref{prop:keyless}\\
 Malleable or ambiguous files & canonical encoding, strict parser, never panics & property tests\\
@@ -465,7 +465,7 @@ Linear algebra over one Mersenne prime is enough to protect a master key against
 \bibitem{davi10} F.~Dav\`i, S.~Dziembowski and D.~Venturi. Leakage-resilient storage. In \emph{SCN 2010}, LNCS 6280, pages 121--137.
 \bibitem{dziembowski11} S.~Dziembowski and S.~Faust. Leakage-resilient cryptography from the inner-product extractor. In \emph{ASIACRYPT 2011}, LNCS 7073, pages 702--721.
 \bibitem{feldman87} P.~Feldman. A practical scheme for non-interactive verifiable secret sharing. In \emph{FOCS 1987}, pages 427--437.
-\bibitem{halderman08} J.~A.~Halderman et al. Lest we remember: cold boot attacks on encryption keys. In \emph{USENIX Security 2008}.
+\bibitem{halderman08} J.~A.~Halderman et al. Lest we remember: cold boot attacks on encryption keys. In \emph{USENIX Security 2008}, pages 45--60.
 \bibitem{herzberg95} A.~Herzberg, S.~Jarecki, H.~Krawczyk and M.~Yung. Proactive secret sharing, or: how to cope with perpetual leakage. In \emph{CRYPTO 1995}, LNCS 963, pages 339--352.
 \bibitem{kocher96} P.~Kocher. Timing attacks on implementations of Diffie-Hellman, RSA, DSS, and other systems. In \emph{CRYPTO 1996}, LNCS 1109, pages 104--113.
 \bibitem{langley10} A.~Langley. ctgrind: checking that functions are constant time with Valgrind. \url{https://github.com/agl/ctgrind}, 2010.

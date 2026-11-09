@@ -11,7 +11,7 @@
 //!   `lambda_R` bits of arbitrary leakage from each half, the advantage of
 //!   any distinguisher is at most `2^((lambda_L + lambda_R)/2) * p^((3 - ell)/2)`
 //!   (Theorem 7 in the paper, proved with the inner-product two-source
-//!   extractor). For `ell = 8` and `p = 2^127 - 1` this allows 379 bits of
+//!   extractor). For `ell = 8` and `p = 2^127 - 1` this allows 378 bits of
 //!   leakage at advantage `2^-128`.
 //!
 //! ## Refresh by skew-symmetric matrices

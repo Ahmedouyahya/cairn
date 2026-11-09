@@ -11,29 +11,29 @@
         "share_bytes_per_component": 128
       },
       {
-        "budget_bits_eps_2^-128": 125.0,
-        "budget_bits_eps_2^-64": 253.0,
+        "budget_bits_eps_2^-128": 124.0,
+        "budget_bits_eps_2^-64": 252.0,
         "ell": 6,
         "half_size_bits": 762.0,
         "share_bytes_per_component": 192
       },
       {
-        "budget_bits_eps_2^-128": 379.0,
-        "budget_bits_eps_2^-64": 507.0,
+        "budget_bits_eps_2^-128": 378.0,
+        "budget_bits_eps_2^-64": 506.0,
         "ell": 8,
         "half_size_bits": 1016.0,
         "share_bytes_per_component": 256
       },
       {
-        "budget_bits_eps_2^-128": 887.0,
-        "budget_bits_eps_2^-64": 1015.0,
+        "budget_bits_eps_2^-128": 886.0,
+        "budget_bits_eps_2^-64": 1014.0,
         "ell": 12,
         "half_size_bits": 1524.0,
         "share_bytes_per_component": 384
       },
       {
-        "budget_bits_eps_2^-128": 1395.0,
-        "budget_bits_eps_2^-64": 1523.0,
+        "budget_bits_eps_2^-128": 1394.0,
+        "budget_bits_eps_2^-64": 1522.0,
         "ell": 16,
         "half_size_bits": 2032.0,
         "share_bytes_per_component": 512

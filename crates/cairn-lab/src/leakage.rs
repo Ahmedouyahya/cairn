@@ -84,11 +84,15 @@ fn models() -> Vec<Model> {
 }
 
 fn production_table() -> Vec<Value> {
-    let lp = 127f64; // log2 p for p = 2^127 - 1, to within 2^-127
+    // log2 p is a hair below 127 for p = 2^127 - 1, and Theorem 7 carries a
+    // factor (1 + 1/p); both are absorbed by flooring a value just below the
+    // real-number budget, so the reported budget is rigorous.
+    let lp = 127f64;
     [4u32, 6, 8, 12, 16]
         .iter()
         .map(|&ell| {
-            let budget = |eps_bits: f64| ((ell as f64 - 3.0) * lp - 2.0 * eps_bits).max(0.0);
+            let budget =
+                |eps_bits: f64| ((ell as f64 - 3.0) * lp - 2.0 * eps_bits - 1e-6).floor().max(0.0);
             json!({
                 "ell": ell,
                 "half_size_bits": ell as f64 * lp,
