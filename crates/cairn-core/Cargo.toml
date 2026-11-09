@@ -1,0 +1,21 @@
+[package]
+name = "cairn-core"
+description = "CAIRN: information-theoretic, leakage-resilient threshold custody for master keys over GF(2^127 - 1)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+# Deterministic SplitMix64 byte stream. NOT a secure RNG. Only for test vectors and lab experiments.
+insecure-test-rng = []
+
+[dependencies]
+zeroize.workspace = true
+
+[dev-dependencies]
+cairn-core = { path = ".", features = ["insecure-test-rng"] }
+proptest = "1"
+num-bigint = "0.4"
+serde_json = "1"

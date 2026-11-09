@@ -1,0 +1,195 @@
+{
+  "experiment": "leakage",
+  "pass": true,
+  "result": {
+    "production_budgets": [
+      {
+        "budget_bits_eps_2^-128": 0.0,
+        "budget_bits_eps_2^-64": 0.0,
+        "ell": 4,
+        "half_size_bits": 508.0,
+        "share_bytes_per_component": 128
+      },
+      {
+        "budget_bits_eps_2^-128": 125.0,
+        "budget_bits_eps_2^-64": 253.0,
+        "ell": 6,
+        "half_size_bits": 762.0,
+        "share_bytes_per_component": 192
+      },
+      {
+        "budget_bits_eps_2^-128": 379.0,
+        "budget_bits_eps_2^-64": 507.0,
+        "ell": 8,
+        "half_size_bits": 1016.0,
+        "share_bytes_per_component": 256
+      },
+      {
+        "budget_bits_eps_2^-128": 887.0,
+        "budget_bits_eps_2^-64": 1015.0,
+        "ell": 12,
+        "half_size_bits": 1524.0,
+        "share_bytes_per_component": 384
+      },
+      {
+        "budget_bits_eps_2^-128": 1395.0,
+        "budget_bits_eps_2^-64": 1523.0,
+        "ell": 16,
+        "half_size_bits": 2032.0,
+        "share_bytes_per_component": 512
+      }
+    ],
+    "toy_field": {
+      "ell": 4,
+      "encodings_per_value": 62500,
+      "models": [
+        {
+          "advantage": 0.0,
+          "leaked_bits_upper_bound": 0.0,
+          "model": "coords(0,0)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 2.321928094887362,
+          "model": "coords(0,1)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 4.643856189774724,
+          "model": "coords(0,2)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 6.965784284662087,
+          "model": "coords(0,3)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 9.287712379549449,
+          "model": "coords(0,4)"
+        },
+        {
+          "advantage": 0.0,
+          "leaked_bits_upper_bound": 2.321928094887362,
+          "model": "coords(1,0)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 4.643856189774724,
+          "model": "coords(1,1)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 6.965784284662087,
+          "model": "coords(1,2)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 9.287712379549449,
+          "model": "coords(1,3)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 11.60964047443681,
+          "model": "coords(1,4)"
+        },
+        {
+          "advantage": 0.0,
+          "leaked_bits_upper_bound": 4.643856189774724,
+          "model": "coords(2,0)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 6.965784284662087,
+          "model": "coords(2,1)"
+        },
+        {
+          "advantage": 0.04,
+          "leaked_bits_upper_bound": 9.287712379549449,
+          "model": "coords(2,2)"
+        },
+        {
+          "advantage": 0.04,
+          "leaked_bits_upper_bound": 11.60964047443681,
+          "model": "coords(2,3)"
+        },
+        {
+          "advantage": 0.04,
+          "leaked_bits_upper_bound": 13.931568569324174,
+          "model": "coords(2,4)"
+        },
+        {
+          "advantage": 0.0,
+          "leaked_bits_upper_bound": 6.965784284662087,
+          "model": "coords(3,0)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 9.287712379549449,
+          "model": "coords(3,1)"
+        },
+        {
+          "advantage": 0.04,
+          "leaked_bits_upper_bound": 11.60964047443681,
+          "model": "coords(3,2)"
+        },
+        {
+          "advantage": 0.2,
+          "leaked_bits_upper_bound": 13.931568569324174,
+          "model": "coords(3,3)"
+        },
+        {
+          "advantage": 0.2,
+          "leaked_bits_upper_bound": 16.253496664211536,
+          "model": "coords(3,4)"
+        },
+        {
+          "advantage": 0.0,
+          "leaked_bits_upper_bound": 9.287712379549449,
+          "model": "coords(4,0)"
+        },
+        {
+          "advantage": 0.008,
+          "leaked_bits_upper_bound": 11.60964047443681,
+          "model": "coords(4,1)"
+        },
+        {
+          "advantage": 0.04,
+          "leaked_bits_upper_bound": 13.931568569324174,
+          "model": "coords(4,2)"
+        },
+        {
+          "advantage": 0.2,
+          "leaked_bits_upper_bound": 16.253496664211536,
+          "model": "coords(4,3)"
+        },
+        {
+          "advantage": 1.0,
+          "leaked_bits_upper_bound": 18.575424759098897,
+          "model": "coords(4,4)"
+        },
+        {
+          "advantage": 0.055296,
+          "leaked_bits_upper_bound": 8.0,
+          "model": "low_bits(1)"
+        },
+        {
+          "advantage": 0.485888,
+          "leaked_bits_upper_bound": 16.0,
+          "model": "low_bits(2)"
+        },
+        {
+          "advantage": 1.0,
+          "leaked_bits_upper_bound": 18.575424759098897,
+          "model": "low_bits(3)"
+        },
+        {
+          "advantage": 0.18152,
+          "leaked_bits_upper_bound": 12.679700005769249,
+          "model": "hamming"
+        }
+      ],
+      "p": 5
+    }
+  }
+}

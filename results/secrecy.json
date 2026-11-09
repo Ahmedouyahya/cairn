@@ -1,0 +1,66 @@
+{
+  "experiment": "secrecy",
+  "pass": true,
+  "result": [
+    {
+      "authorised_sets_checked": 6,
+      "dealings_enumerated": 169,
+      "every_t_minus_1_view_is_a_bijection_of_the_randomness": true,
+      "n": 4,
+      "p": 13,
+      "pass": true,
+      "recovery_failures": 0,
+      "secrecy_violations": 0,
+      "t": 2,
+      "unauthorised_sets_checked": 4
+    },
+    {
+      "authorised_sets_checked": 10,
+      "dealings_enumerated": 2197,
+      "every_t_minus_1_view_is_a_bijection_of_the_randomness": true,
+      "n": 5,
+      "p": 13,
+      "pass": true,
+      "recovery_failures": 0,
+      "secrecy_violations": 0,
+      "t": 3,
+      "unauthorised_sets_checked": 10
+    },
+    {
+      "authorised_sets_checked": 15,
+      "dealings_enumerated": 28561,
+      "every_t_minus_1_view_is_a_bijection_of_the_randomness": true,
+      "n": 6,
+      "p": 13,
+      "pass": true,
+      "recovery_failures": 0,
+      "secrecy_violations": 0,
+      "t": 4,
+      "unauthorised_sets_checked": 20
+    },
+    {
+      "authorised_sets_checked": 4,
+      "dealings_enumerated": 29791,
+      "every_t_minus_1_view_is_a_bijection_of_the_randomness": true,
+      "n": 4,
+      "p": 31,
+      "pass": true,
+      "recovery_failures": 0,
+      "secrecy_violations": 0,
+      "t": 3,
+      "unauthorised_sets_checked": 6
+    },
+    {
+      "authorised_sets_checked": 6,
+      "dealings_enumerated": 16807,
+      "every_t_minus_1_view_is_a_bijection_of_the_randomness": true,
+      "n": 6,
+      "p": 7,
+      "pass": true,
+      "recovery_failures": 0,
+      "secrecy_violations": 0,
+      "t": 5,
+      "unauthorised_sets_checked": 15
+    }
+  ]
+}

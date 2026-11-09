@@ -1,0 +1,20 @@
+[workspace]
+resolver = "3"
+members = ["crates/cairn-core", "crates/cairn-cli", "crates/cairn-naive", "crates/cairn-lab"]
+
+[workspace.package]
+version = "1.0.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+rust-version = "1.85"
+
+[workspace.dependencies]
+zeroize = { version = "1.8", default-features = false, features = ["alloc", "zeroize_derive"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+debug = 1
+

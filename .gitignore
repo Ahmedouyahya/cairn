@@ -1,0 +1,14 @@
+/target
+*.cairn
+*.cairn-delta
+__pycache__/
+.venv/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.synctex.gz
+paper/*.bbl
+paper/*.blg
+paper/*.toc

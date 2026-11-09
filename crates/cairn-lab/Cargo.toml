@@ -1,0 +1,12 @@
+[package]
+name = "cairn-lab"
+description = "Exhaustive verification, leakage analysis, timing tests and attack demos for CAIRN"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+cairn-core = { path = "../cairn-core", features = ["insecure-test-rng"] }
+cairn-naive = { path = "../cairn-naive" }
+serde_json = "1"

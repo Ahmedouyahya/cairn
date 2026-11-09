@@ -1,0 +1,78 @@
+{
+  "experiment": "amd",
+  "pass": true,
+  "result": [
+    {
+      "bound_probability": 0.06451612903225806,
+      "k": 1,
+      "p": 31,
+      "pairs_attaining_worst_case": 432450,
+      "pass": true,
+      "secret_error_pairs": 923490,
+      "theorem_bound_k_plus_1": 2,
+      "tight": true,
+      "worst_case_passing_x": 2,
+      "worst_case_probability": 0.06451612903225806
+    },
+    {
+      "bound_probability": 0.15384615384615385,
+      "k": 1,
+      "p": 13,
+      "pairs_attaining_worst_case": 12168,
+      "pass": true,
+      "secret_error_pairs": 28548,
+      "theorem_bound_k_plus_1": 2,
+      "tight": true,
+      "worst_case_passing_x": 2,
+      "worst_case_probability": 0.15384615384615385
+    },
+    {
+      "bound_probability": 0.23076923076923078,
+      "k": 2,
+      "p": 13,
+      "pairs_attaining_worst_case": 580008,
+      "pass": true,
+      "secret_error_pairs": 4826640,
+      "theorem_bound_k_plus_1": 3,
+      "tight": true,
+      "worst_case_passing_x": 3,
+      "worst_case_probability": 0.23076923076923078
+    },
+    {
+      "bound_probability": 0.42857142857142855,
+      "k": 2,
+      "p": 7,
+      "pairs_attaining_worst_case": 10290,
+      "pass": true,
+      "secret_error_pairs": 117600,
+      "theorem_bound_k_plus_1": 3,
+      "tight": true,
+      "worst_case_passing_x": 3,
+      "worst_case_probability": 0.42857142857142855
+    },
+    {
+      "bound_probability": 0.5714285714285714,
+      "k": 3,
+      "p": 7,
+      "pairs_attaining_worst_case": 72030,
+      "pass": true,
+      "secret_error_pairs": 5764458,
+      "theorem_bound_k_plus_1": 4,
+      "tight": true,
+      "worst_case_passing_x": 4,
+      "worst_case_probability": 0.5714285714285714
+    },
+    {
+      "bound_probability": 1.0,
+      "k": 4,
+      "p": 5,
+      "pairs_attaining_worst_case": 2500,
+      "pass": true,
+      "secret_error_pairs": 9765000,
+      "theorem_bound_k_plus_1": 5,
+      "tight": true,
+      "worst_case_passing_x": 5,
+      "worst_case_probability": 1.0
+    }
+  ]
+}

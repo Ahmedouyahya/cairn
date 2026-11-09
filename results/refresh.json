@@ -1,0 +1,148 @@
+{
+  "experiment": "refresh",
+  "pass": true,
+  "result": [
+    {
+      "ell": 3,
+      "method": "A (library, every skew matrix)",
+      "old_R_and_new_L_reveal_sigma_exactly": true,
+      "p": 3,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.30864197530864196,
+      "tv_old_R_new_L": 1.0
+    },
+    {
+      "ell": 3,
+      "method": "A (library, every skew matrix)",
+      "old_R_and_new_L_reveal_sigma_exactly": false,
+      "p": 3,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.30864197530864196,
+      "tv_old_R_new_L": 0.38545953360768176
+    },
+    {
+      "ell": 2,
+      "method": "A (library, every skew matrix)",
+      "old_R_and_new_L_reveal_sigma_exactly": true,
+      "p": 5,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.84,
+      "tv_old_R_new_L": 1.0
+    },
+    {
+      "ell": 2,
+      "method": "A (library, every skew matrix)",
+      "old_R_and_new_L_reveal_sigma_exactly": false,
+      "p": 5,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.84,
+      "tv_old_R_new_L": 0.872
+    },
+    {
+      "ell": 2,
+      "method": "A (library, every skew matrix)",
+      "old_R_and_new_L_reveal_sigma_exactly": true,
+      "p": 7,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.8775510204081632,
+      "tv_old_R_new_L": 1.0
+    },
+    {
+      "ell": 2,
+      "method": "A (library, every skew matrix)",
+      "old_R_and_new_L_reveal_sigma_exactly": false,
+      "p": 7,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.8775510204081632,
+      "tv_old_R_new_L": 0.8950437317784257
+    },
+    {
+      "ell": 3,
+      "method": "B (hyperplane kernel)",
+      "p": 3,
+      "p_pow_minus_ell_minus_1": 0.1111111111111111,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.30864197530864146,
+      "tv_old_L_new_R_nonzero_values": 0.1111111111111118,
+      "tv_old_R_new_L": 1.000000000000009,
+      "tv_old_R_new_L_nonzero_values": 1.0000000000000089
+    },
+    {
+      "ell": 3,
+      "method": "B (hyperplane kernel)",
+      "p": 3,
+      "p_pow_minus_ell_minus_1": 0.1111111111111111,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.30864197530864473,
+      "tv_old_L_new_R_nonzero_values": 0.11111111111111306,
+      "tv_old_R_new_L": 0.38545953360768404,
+      "tv_old_R_new_L_nonzero_values": 0.11111111111111052
+    },
+    {
+      "ell": 2,
+      "method": "B (hyperplane kernel)",
+      "p": 5,
+      "p_pow_minus_ell_minus_1": 0.2,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.8400000000000087,
+      "tv_old_L_new_R_nonzero_values": 0.20000000000000015,
+      "tv_old_R_new_L": 1.0000000000000007,
+      "tv_old_R_new_L_nonzero_values": 1.0000000000000007
+    },
+    {
+      "ell": 2,
+      "method": "B (hyperplane kernel)",
+      "p": 5,
+      "p_pow_minus_ell_minus_1": 0.2,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.840000000000009,
+      "tv_old_L_new_R_nonzero_values": 0.2000000000000002,
+      "tv_old_R_new_L": 0.871999999999995,
+      "tv_old_R_new_L_nonzero_values": 0.19999999999999954
+    },
+    {
+      "ell": 3,
+      "method": "B (hyperplane kernel)",
+      "p": 5,
+      "p_pow_minus_ell_minus_1": 0.04,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.19360000000001834,
+      "tv_old_L_new_R_nonzero_values": 0.0400000000000026,
+      "tv_old_R_new_L": 1.0000000000001268,
+      "tv_old_R_new_L_nonzero_values": 1.0000000000001266
+    },
+    {
+      "ell": 3,
+      "method": "B (hyperplane kernel)",
+      "p": 5,
+      "p_pow_minus_ell_minus_1": 0.04,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.1936000000000234,
+      "tv_old_L_new_R_nonzero_values": 0.04000000000000467,
+      "tv_old_R_new_L": 0.22585600000005143,
+      "tv_old_R_new_L_nonzero_values": 0.04000000000000592
+    },
+    {
+      "ell": 4,
+      "method": "B (hyperplane kernel)",
+      "p": 3,
+      "p_pow_minus_ell_minus_1": 0.037037037037037035,
+      "refresh": "2-step",
+      "tv_old_L_new_R": 0.10836762688614184,
+      "tv_old_L_new_R_nonzero_values": 0.03703703703703911,
+      "tv_old_R_new_L": 0.9999999999999236,
+      "tv_old_R_new_L_nonzero_values": 0.9999999999999236
+    },
+    {
+      "ell": 4,
+      "method": "B (hyperplane kernel)",
+      "p": 3,
+      "p_pow_minus_ell_minus_1": 0.037037037037037035,
+      "refresh": "3-step",
+      "tv_old_L_new_R": 0.10836762688615498,
+      "tv_old_L_new_R_nonzero_values": 0.03703703703704765,
+      "tv_old_R_new_L": 0.1413910481126163,
+      "tv_old_R_new_L_nonzero_values": 0.0370370370370505
+    }
+  ]
+}
