@@ -12,6 +12,7 @@ Usage: python3 video/build.py [--draft] [--only S03Field]
 
 import argparse
 import json
+import sys
 import re
 import subprocess
 from pathlib import Path
@@ -21,8 +22,9 @@ VID = ROOT / "video"
 OUT = VID / "build"
 NARR = VID / "narration"
 VOICE = VID / "voice"
-LEAD, TAIL, WPS = 0.6, 1.0, 2.45
-TAILS = {"01_hook": 2.2, "10_close": 3.2}  # longer holds on the title cards
+LEAD, PAUSE, TAIL, WPS = 0.8, 0.9, 2.2, 2.45
+# Longer holds where the viewer needs time to read a result.
+TAILS = {"01_hook": 3.2, "07_refresh": 3.0, "08_sidechannel": 2.8, "09_demo": 3.0, "10_close": 4.2}
 
 SCENES = [
     ("01_hook", "S01Hook"), ("02_windows", "S02Windows"), ("03_field", "S03Field"),
@@ -67,14 +69,29 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--draft", action="store_true")
     ap.add_argument("--only")
+    ap.add_argument("--mux-only", action="store_true", help="reuse existing renders, only redo audio and joining")
     a = ap.parse_args()
     OUT.mkdir(exist_ok=True)
+
+    sys.path.insert(0, str(VID))
+    from pace import pace
 
     durs = {}
     for key, _ in SCENES:
         vf = voice_file(key)
-        voice = probe(vf) if vf else len(" ".join(sentences(key)).split()) / WPS
-        durs[key] = {"voice": round(voice, 3), "lead": LEAD, "total": round(LEAD + voice + TAILS.get(key, TAIL), 3), "has_voice": bool(vf)}
+        tail = TAILS.get(key, TAIL)
+        text = (NARR / f"{key}.txt").read_text()
+        if vf:
+            d = pace(vf, text, OUT / "paced" / f"{key}.wav", LEAD, PAUSE, tail)
+            print(f"  {key}: {d['matched']}/{d['sentences'] - 1} sentence breaks found in the audio")
+        else:  # no voice yet: estimate from word counts
+            sents = sentences(key)
+            starts, t = [], LEAD
+            for s in sents:
+                starts.append(round(t, 3))
+                t += len(s.split()) / WPS + PAUSE
+            d = {"starts": starts + [round(t - PAUSE, 3)], "total": round(t - PAUSE + tail, 3)}
+        durs[key] = {**d, "lead": LEAD, "has_voice": bool(vf)}
     (OUT / "durations.json").write_text(json.dumps(durs, indent=1) + "\n")
     total = sum(d["total"] for d in durs.values())
     print(f"total length {total/60:.0f}:{total%60:04.1f}  (voice clips: {sum(d['has_voice'] for d in durs.values())}/10)")
@@ -85,22 +102,17 @@ def main():
     for key, cls in SCENES:
         if a.only and a.only != cls:
             continue
-        sh(manim + ["render", "--resolution", res, "--frame_rate", str(fps), "--media_dir", str(OUT / "media"),
-                    "--disable_caching", "-o", f"{key}.mp4", str(VID / "scenes.py"), cls], stdout=subprocess.DEVNULL)
-        video = next((OUT / "media" / "videos" / "scenes").glob(f"*/{key}.mp4"))
+        if not a.mux_only:
+            sh(manim + ["render", "--resolution", res, "--frame_rate", str(fps), "--media_dir", str(OUT / "media"),
+                        "--disable_caching", "-o", f"{key}.mp4", str(VID / "scenes.py"), cls], stdout=subprocess.DEVNULL)
+        # Manim writes to a folder named after the resolution, e.g. 1080p30.
+        video = OUT / "media" / "videos" / "scenes" / f"{res.split(',')[1]}p{fps}" / f"{key}.mp4"
         d = durs[key]
-        vf = voice_file(key)
         out = OUT / f"part_{key}.mp4"
-        if vf:
-            ms = int(LEAD * 1000)
-            audio = ["-i", str(vf), "-filter_complex",
-                     f"[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,aresample=44100,adelay={ms}|{ms},apad[a]",
-                     "-map", "0:v", "-map", "[a]"]
-        else:
-            audio = ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
-        sh(["ffmpeg", "-y", "-v", "error", "-i", str(video), *audio, "-t", str(d["total"]),
-            "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
-            "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2", str(out)])
+        # Video only, cut or padded (last frame held) to the scene's exact length.
+        sh(["ffmpeg", "-y", "-v", "error", "-i", str(video), "-vf", "tpad=stop_mode=clone:stop_duration=3",
+            "-t", str(d["total"]), "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "14",
+            "-pix_fmt", "yuv420p", "-r", str(fps), str(out)])
         parts.append(out)
         print(f"  rendered {key}  ({d['total']:.1f} s)")
 
@@ -108,21 +120,50 @@ def main():
         return
     lst = OUT / "parts.txt"
     lst.write_text("".join(f"file '{p.name}'\n" for p in parts))
+    joined = OUT / "joined_video.mp4"
+    sh(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(joined)], cwd=OUT)
+
+    # One audio mix for the whole film: paced voice + ducked music + effects at the scenes' cues.
+    import numpy as np
+    import soundfile as sf
+    from sound import SR, mix
+
+    voice, cues, offset = [], [], 0.0
+    for key, _ in SCENES:
+        d = durs[key]
+        n = int(round(d["total"] * SR))
+        if d["has_voice"]:
+            y, sr = sf.read(OUT / "paced" / f"{key}.wav", dtype="float32")
+            assert sr == SR
+        else:
+            y = np.zeros(n, np.float32)
+        y = np.pad(y, (0, max(0, n - len(y))))[:n]
+        voice.append(y)
+        cf = OUT / "cues" / f"{key}.json"
+        if cf.exists():
+            cues += [(offset + t, name, dur) for t, name, dur in json.loads(cf.read_text())]
+        offset += n / SR
+    voice = np.concatenate(voice)
+    voice *= 0.5 / (np.max(np.abs(voice)) + 1e-9)  # headroom; loudness is normalised at the end
+    sf.write(OUT / "mix.wav", mix(voice, cues), SR)
+    print(f"  mixed audio: {len(cues)} sound cues")
+
     final = OUT / f"cairn_{tag}{'' if all(d['has_voice'] for d in durs.values()) else '_silent_draft'}.mp4"
-    sh(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy",
-        "-movflags", "+faststart", str(final)], cwd=OUT)
+    sh(["ffmpeg", "-y", "-v", "error", "-i", str(joined), "-i", str(OUT / "mix.wav"),
+        "-vf", "vignette=angle=PI/9:mode=forward,noise=alls=3:allf=t",
+        "-af", "loudnorm=I=-16:TP=-1.5:LRA=11,aresample=44100",
+        "-map", "0:v", "-map", "1:a", "-shortest",
+        "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(final)])
 
     # Subtitles, sentence by sentence, using the same timing model as the scenes.
     srt, n, offset = [], 1, 0.0
     for key, _ in SCENES:
         d = durs[key]
         sents = sentences(key)
-        words = [len(s.split()) for s in sents]
-        tot, acc = sum(words), 0
-        for s, w in zip(sents, words):
-            start = offset + LEAD + d["voice"] * acc / tot
-            acc += w
-            end = offset + LEAD + d["voice"] * acc / tot
+        for i, s in enumerate(sents):
+            start = offset + d["starts"][i]
+            end = offset + (d["starts"][i + 1] - (PAUSE if i < len(sents) - 1 else 0))
             srt.append(f"{n}\n{stamp(start)} --> {stamp(end)}\n{s}\n")
             n += 1
         offset += d["total"]

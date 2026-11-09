@@ -9,6 +9,7 @@ of the voice clip (see video/build.py, which writes build/durations.json).
 
 import json
 import re
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +17,7 @@ from manim import (
     DOWN, LEFT, ORIGIN, RIGHT, UP, UL, UR,
     AddTextLetterByLetter, AnimationGroup, Axes, Create, Cross, Dot, FadeIn, FadeOut,
     GrowFromEdge, Indicate, LaggedStart, Line, MathTex, Matrix, Rectangle,
-    ReplacementTransform, RoundedRectangle, Scene, SurroundingRectangle, TexTemplate,
+    Circumscribe, MovingCameraScene, ReplacementTransform, RoundedRectangle, Scene, SurroundingRectangle, TexTemplate,
     Text, Transform, VGroup, Write, Circle, Ellipse, DashedLine, Arrow,
 )
 
@@ -85,19 +86,42 @@ def key_icon(color=INK, scale=1.0):
     return VGroup(ring, shaft, t1, t2).move_to(ORIGIN)
 
 
-class Narrated(Scene):
+class Narrated(MovingCameraScene):
     key = ""
+    SLOW = 1.25  # every explicitly timed animation runs a quarter slower: easier to follow
+    PUSH = 0.98  # the camera slowly closes in by 2% over the scene
 
     def setup(self):
+        super().setup()
         self.camera.background_color = BG
         d = json.loads(DUR.read_text())[self.key]
-        self.total, self.lead, self.voice = d["total"], d["lead"], d["voice"]
-        text = (NARR / f"{self.key}.txt").read_text().strip()
-        sents = [s for s in re.split(r"(?<=[.!?])\s+", text) if s]
-        words = [len(s.split()) for s in sents]
-        tot = sum(words)
-        cum = np.concatenate([[0], np.cumsum(words)])
-        self.starts = [self.lead + self.voice * c / tot for c in cum]
+        # starts[i] is when sentence i begins in the paced voice track
+        # (measured from the audio by video/pace.py); starts[-1] is the end of speech.
+        self.total, self.starts = d["total"], d["starts"]
+        self.cues = []
+        frame = self.camera.frame
+        rate = self.PUSH ** (1 / self.total)
+        frame.add_updater(lambda m, dt: m.scale(rate ** dt))
+        self.add(frame)
+
+    def play(self, *animations, **kwargs):
+        # Only scale explicit animation timings. Scene.wait() also goes through
+        # play() without a run_time keyword, and must keep its exact duration.
+        if "run_time" in kwargs:
+            kwargs["run_time"] *= self.SLOW
+        super().play(*animations, **kwargs)
+
+    def cue(self, name, dur=0.0):
+        """Record a sound-effect cue at the current time (mixed by build.py)."""
+        self.cues.append([round(self.renderer.time, 3), name, round(dur, 3)])
+
+    def emph(self, mob, color=BLUE):
+        """Trace an outline around a key result, with a soft chime."""
+        self.cue("chime")
+        self.play(Circumscribe(mob, color=color, buff=0.15, time_width=0.7, stroke_width=3), run_time=1.1)
+
+    def content(self):
+        return [m for m in self.mobjects if m is not self.camera.frame]
 
     def at(self, i, frac=0.0):
         """Wait until fraction `frac` of sentence i has been spoken."""
@@ -105,18 +129,24 @@ class Narrated(Scene):
         dt = t - self.renderer.time
         if dt > 1 / 60:
             self.wait(dt)
+        elif dt < -0.3:
+            print(f"[late] {self.key} sentence {i} +{frac:.2f}: visuals {-dt:.2f}s behind the voice",
+                  file=sys.stderr, flush=True)
 
     def end(self):
         """Hold, then fade everything out so scenes join without a hard cut."""
-        fade = 0.45
+        fade = 0.6
         dt = self.total - fade - self.renderer.time
         if dt > 1 / 60:
             self.wait(dt)
-        if self.mobjects:
-            self.play(*[FadeOut(m) for m in self.mobjects], run_time=fade)
+        if self.content():
+            MovingCameraScene.play(self, *[FadeOut(m) for m in self.content()], run_time=fade)
         dt = self.total - self.renderer.time
         if dt > 1 / 60:
             self.wait(dt)
+        cues = ROOT / "video" / "build" / "cues"
+        cues.mkdir(parents=True, exist_ok=True)
+        (cues / f"{self.key}.json").write_text(json.dumps(self.cues))
 
 
 # ---------------------------------------------------------------------------
@@ -139,6 +169,7 @@ class S01Hook(Narrated):
             box = RoundedRectangle(corner_radius=0.15, width=1.0, height=1.0, color=INK2, stroke_width=3)
             num = T(str(i + 1), 34, INK)
             tokens.add(VGroup(box, num).move_to(LEFT * 4 + RIGHT * 2 * i))
+        self.cue("pop")
         self.play(LaggedStart(*[ReplacementTransform(key.copy(), t) for t in tokens], lag_ratio=0.12), FadeOut(key), run_time=1.5)
         self.at(1, 0.45)
         chosen = [tokens[0], tokens[2], tokens[4]]
@@ -161,6 +192,7 @@ class S01Hook(Narrated):
 
         self.at(3)
         title = T("CAIRN", 92, INK).next_to(stack, UP, buff=0.5)
+        self.cue("chime")
         self.play(Write(title), run_time=0.8)
         sub = T("information-theoretic threshold custody of master keys", 28, INK2).next_to(title, UP, buff=0.3)
         sub2 = M(r"\text{linear algebra over } \mathbb{F}_{2^{127}-1}", 34, INK2).next_to(stack, DOWN, buff=0.35)
@@ -202,6 +234,7 @@ class S02Windows(Narrated):
             layers.add(lay)
         for i in range(5):
             self.at(2 + i)
+            self.cue("tick")
             self.play(FadeIn(lines[i], shift=0.2 * RIGHT), run_time=0.6)
 
         self.at(7)
@@ -210,6 +243,7 @@ class S02Windows(Narrated):
         for i in range(3):
             self.at(8 + i)
             self.play(FadeIn(words[i]), run_time=0.25)
+            self.cue("pop")
             self.play(Create(Cross(words[i], stroke_color=ORANGE, stroke_width=5)), run_time=0.3)
         self.end()
 
@@ -243,6 +277,7 @@ class S03Field(Narrated):
         badge = T("0 divisions on secret data", 30, BLUE)
         box = SurroundingRectangle(badge, color=BLUE, buff=0.2, corner_radius=0.1)
         VGroup(badge, box).to_edge(DOWN, buff=0.3)
+        self.cue("pop")
         self.play(FadeIn(badge), Create(box), run_time=0.7)
         self.end()
 
@@ -281,6 +316,7 @@ class S04Amd(Narrated):
         self.at(4)
         bound = M(r"\Pr[\text{forgery}] \;\le\; \frac{k+1}{p} \;\approx\; 2^{-125}", 52, BLUE).shift(DOWN * 2.25)
         self.play(Write(bound), run_time=1.2)
+        self.emph(bound)
         amd = load("amd")
         pairs = sum(r["secret_error_pairs"] for r in amd)
         chk = T(f"checked exhaustively over {pairs:,} secret/error pairs: the bound is attained exactly", 22, INK2).next_to(bound, DOWN, buff=0.3)
@@ -312,6 +348,7 @@ class S05Sharing(Narrated):
 
         self.at(4)
         big = T("Nothing.", 80, INK)
+        self.cue("low")
         self.play(FadeOut(VGroup(eq, V, vlab, boxes, rk, title)), FadeIn(big), run_time=0.6)
         self.end()
 
@@ -335,7 +372,7 @@ class S06Storage(Narrated):
         self.play(Create(Cross(share, stroke_color=ORANGE, stroke_width=6)), run_time=0.6)
 
         self.at(2)
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not title], run_time=0.4)
+        self.play(*[FadeOut(m) for m in self.content() if m is not title], run_time=0.4)
         L = cells(8, BLUE, "L").shift(UP * 1.4)
         R = cells(8, BLUE, "R").shift(UP * 0.0)
         regA = T("memory region A", 22, INK2).next_to(L, RIGHT, buff=0.4)
@@ -352,6 +389,7 @@ class S06Storage(Narrated):
         self.play(ReplacementTransform(ip, bound), run_time=1.0)
         res = M(r"\ell = 8:\quad \lambda_L+\lambda_R \le 378 \text{ bits} \;\Rightarrow\; \le 2^{-128}", 42, BLUE).next_to(bound, DOWN, buff=0.45)
         self.play(FadeIn(res, shift=0.2 * UP), run_time=0.8)
+        self.emph(res)
 
         self.at(4)
         self.play(*[c.animate.set_fill(PANEL, opacity=1) for c in leak], run_time=0.3)
@@ -383,6 +421,7 @@ class S07Refresh(Narrated):
 
         self.at(3)
         leak = M(r"\langle L_{\mathrm{new}},\, R_{\mathrm{old}}\rangle = \sigma", 50, ORANGE).shift(RIGHT * 2.8 + UP * 0.75)
+        self.cue("low")
         self.play(Write(leak), run_time=1.0)
         self.at(4)
         self.play(Indicate(leak, color=ORANGE), run_time=0.9)
@@ -417,6 +456,7 @@ class S07Refresh(Narrated):
 
         self.at(5)
         self.play(Create(axis), FadeIn(labels), run_time=0.5)
+        self.cue("low")
         self.play(LaggedStart(*[GrowFromEdge(b, DOWN) for b in bars2], lag_ratio=0.15), run_time=1.0)
         one = T("2-step refresh: TV = 1, a total break", 24, ORANGE).move_to(base + UP * (H + 0.35) + LEFT * 3.0)
         logn = T("log scale", 18, MUTED).move_to(base + UP * (H + 0.35) + RIGHT * 5.4)
@@ -432,6 +472,7 @@ class S07Refresh(Narrated):
         self.play(FadeIn(ticks), FadeIn(vals), run_time=0.6)
         law = M(r"\mathrm{TV} = p^{-(\ell-1)} \text{ exactly}", 40, BLUE).next_to(leak, DOWN, buff=0.35)
         self.play(Write(law), run_time=0.9)
+        self.emph(law)
         self.end()
 
 
@@ -468,6 +509,7 @@ class S08SideChannel(Narrated):
 
         self.at(1)
         self.play(FadeIn(names), FadeIn(legend[0]), run_time=0.5)
+        self.cue("low")
         self.play(LaggedStart(*[GrowFromEdge(b, LEFT) for b in naive_bars], lag_ratio=0.2), run_time=1.2)
         self.play(FadeIn(nv), run_time=0.4)
 
@@ -481,6 +523,7 @@ class S08SideChannel(Narrated):
         cg = VGroup(T("Valgrind (ctgrind): secret-dependent branches", 30, INK2),
                     VGroup(T("CAIRN  0", 40, BLUE), T("baseline  2,289", 40, ORANGE)).arrange(RIGHT, buff=1.4)).arrange(DOWN, buff=0.4).shift(UP * 0.9)
         self.play(FadeIn(cg), run_time=0.7)
+        self.emph(cg[1][0])
 
         self.at(4)
         asm = (RES / "asm_audit_full.txt").read_text().split("--- cairn_audit_mul")[1].splitlines()[1:9]
@@ -537,11 +580,16 @@ class S09Demo(Narrated):
                 self.play(FadeIn(note), run_time=0.25)
             cmd = T("$ " + s["cmd"], 19, INK, font=MONO)
             emit(cmd)
-            self.play(AddTextLetterByLetter(cmd, run_time=typing))
+            self.cue("type", typing * 1.5)
+            self.play(AddTextLetterByLetter(cmd, run_time=typing * 1.5))
             for line in s["out"]:
                 color = ORANGE if ("error" in line or "WARNING" in line) else (BLUE if "verified" in line or "wrote" in line or "refreshed" in line else INK2)
                 o = T("  " + line, 17, color, font=MONO)
                 emit(o)
+                if color == ORANGE:
+                    self.cue("low")
+                elif color == BLUE:
+                    self.cue("pop")
                 self.play(FadeIn(o), run_time=0.2)
 
         self.at(1)
@@ -589,13 +637,16 @@ class S10Close(Narrated):
         self.at(1)
         cmd = T("$ make verify", 32, INK, font=MONO).next_to(rows, DOWN, buff=0.6).align_to(rows, LEFT)
         done = T("== all checks passed", 28, BLUE, font=MONO).next_to(cmd, DOWN, buff=0.15).align_to(cmd, LEFT)
-        self.play(AddTextLetterByLetter(cmd, run_time=0.8))
+        self.cue("type", 1.2)
+        self.play(AddTextLetterByLetter(cmd, run_time=1.2))
+        self.cue("pop")
         self.play(FadeIn(done), run_time=0.4)
 
         self.at(2)
         self.play(FadeOut(VGroup(rows, cmd, done)), run_time=0.6)
         stack = cairn_stack(1.2).shift(DOWN * 1.2)
         title = T("CAIRN", 96, INK).next_to(stack, UP, buff=0.45)
+        self.cue("chime")
         self.play(FadeIn(stack[0], shift=0.4 * DOWN), Write(title), run_time=0.9)
 
         self.at(3)

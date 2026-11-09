@@ -53,9 +53,12 @@ clean:
 	$(CARGO) clean
 	cd paper && latexmk -C
 
+VIDEO_PY := uv run --python 3.12 --with numpy --with soundfile python
+
 video: build
 	python3 video/capture_demo.py
-	python3 video/build.py
+	$(VIDEO_PY) video/build.py
+	python3 video/youtube.py
 
 video-draft: build
-	python3 video/build.py --draft
+	$(VIDEO_PY) video/build.py --draft

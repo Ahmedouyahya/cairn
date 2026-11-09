@@ -15,19 +15,19 @@ Paper (PDF): https://github.com/Ahmedouyahya/cairn/blob/main/paper/cairn.pdf
 
 Chapters
 0:00 Why secret sharing is not enough
-0:21 Five windows through which a shared key leaks
-0:52 The Mersenne field GF(2^127 - 1)
-1:14 L2: algebraic manipulation detection
-1:41 L3: Vandermonde sharing
-1:56 L4: split-state inner-product storage
-2:22 L5: skew-symmetric refresh, and the break we found
-3:01 L6: constant time, measured
-3:25 Demo: the cairn tool against real attacks
-3:53 Evidence and reproducibility
+0:25 Five windows through which a shared key leaks
+1:06 The Mersenne field GF(2^127 - 1)
+1:31 L2: algebraic manipulation detection
+2:02 L3: Vandermonde sharing
+2:23 L4: split-state inner-product storage
+2:53 L5: skew-symmetric refresh, and the break we found
+3:41 L6: constant time, measured
+4:10 Demo: the cairn tool against real attacks
+4:47 Evidence and reproducibility
 
 Every number on screen is read from the lab's results files, and every terminal line is real output of the cairn binary. The animation was rendered with Manim Community.
 Voice-over generated with ElevenLabs (elevenlabs.io).
 
 **Subtitles:** upload `video/build/cairn.srt` (Subtitles, English, "Upload file", "With timing").
 
-**Length:** 4:19
+**Length:** 5:17
