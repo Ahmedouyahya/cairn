@@ -209,7 +209,7 @@ Every operation of \cref{alg:ipenc,alg:refresh} preserves $\ip{L}{R}$: \cref{alg
 For every set $B\subseteq[n]$ with $|B|\le t-1$, the joint distribution of the share files $(\text{share}_j)_{j\in B}$ is the same for every secret.
 \end{theorem}
 \begin{proof}
-Fix a component $c$. The values on $B$ are $f_c(j)=a_c+\sum_{m=1}^{t-1}r_{c,m}j^m$, that is $a_c\mathbf 1+V_B r_c$ with $V_B=[j^m]_{j\in B,\,1\le m<t}$. Now $V_B=\mathrm{diag}(j)_{j\in B}\,W$, where $W=[j^{m-1}]$ is a $|B|\times(t-1)$ Vandermonde matrix on distinct points, hence of full row rank, and $\mathrm{diag}(j)$ is invertible because $0\notin B$. So $r_c\mapsto V_Br_c$ is onto $\F^{|B|}$ and maps the uniform distribution to the uniform distribution; the values are uniform whatever $a_c$. Components use independent coefficients, and the files are randomized functions of the values, the public parameters and the random identifier.
+Fix a component $c$. The values on $B$ are $f_c(j)=a_c+\sum_{m=1}^{t-1}r_{c,m}j^m$, that is $a_c\mathbf 1+V_B r_c$ with $V_B=[j^m]_{j\in B,\,1\le m<t}$. Now $V_B=\mathrm{diag}(j)_{j\in B}\,W$, where $W=[j^{m-1}]$ is a $|B|\times(t-1)$ Vandermonde matrix on distinct points, hence of full row rank, and $\mathrm{diag}(j)$ is invertible because $0\notin B$. So $r_c\mapsto V_Br_c$ is onto $\F^{|B|}$ and maps the uniform distribution to the uniform distribution; the values are uniform whatever $a_c$ (the Reed-Solomon view of Shamir sharing~\cite{mceliece81}). Components use independent coefficients, and the files are randomized functions of the values, the public parameters and the random identifier.
 \end{proof}
 
 \begin{theorem}[Mobile adversary]\label{thm:mobile}
