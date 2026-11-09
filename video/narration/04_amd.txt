@@ -1,0 +1,1 @@
+First, the key is armored. I draw a random x, and attach a tag: x to the k plus two, plus each limb times a power of x. A cheater can only add an error, and that error cannot depend on x. So passing the check means landing on a root of a polynomial of degree at most k plus one. For a thirty-two byte key, the chance is two to the minus one hundred and twenty-five.

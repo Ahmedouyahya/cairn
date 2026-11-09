@@ -1,0 +1,1 @@
+Then the armored key is shared with a Vandermonde matrix. Any t minus one columns have full rank, so any t minus one shares are perfectly uniform. They say nothing about the key. Not a little. Nothing.

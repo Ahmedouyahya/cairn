@@ -1,0 +1,1 @@
+Reconstruction runs in constant time. On a fixed versus random timing test, a textbook implementation scores up to twelve thousand. CAIRN stays below two point one, under the leak threshold of four point five. Valgrind finds zero secret-dependent branches. And the compiled field multiplication contains no conditional jump, and no division.

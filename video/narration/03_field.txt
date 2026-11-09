@@ -1,0 +1,1 @@
+Everything lives in one field: the integers modulo two to the power one hundred and twenty-seven, minus one. In this field, two to the one hundred and twenty-seven is simply one. So reduction is a shift and an add, inversion is a power with a public exponent, and no instruction ever divides a secret.

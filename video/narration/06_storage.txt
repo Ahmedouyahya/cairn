@@ -1,0 +1,1 @@
+But a share sitting in memory can still leak. So CAIRN never stores a share. It stores two vectors, L and R, in two separate memory regions, and the share is their inner product. Using Lindsey's lemma, I prove that an attacker can read three hundred and seventy-eight bits from these regions, and still learn essentially nothing. One region alone, even read completely, is useless.

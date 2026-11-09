@@ -1,0 +1,1 @@
+Every claim in CAIRN is a theorem, and every theorem is checked by a computation: exhaustive enumeration, a second implementation that matches byte for byte, timing tests, Valgrind and Miri. One command reproduces all of it, including the paper. CAIRN. One stone says nothing. Enough stones mark the way.

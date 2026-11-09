@@ -1,0 +1,1 @@
+A master key protects everything else: a signing key, a password vault, a database. The classic way to protect it is to split it between people, so that any three of five can rebuild it, and two learn nothing. I will show you why that is not enough, and what I built instead. This is CAIRN.

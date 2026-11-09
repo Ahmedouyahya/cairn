@@ -1,0 +1,70 @@
+[
+ {
+  "cmd": "cairn split -t 3 -n 5 --generate 32 -o shares/",
+  "out": [
+   "cairn: wrote 5 shares (any 3 recover the secret) to shares/  set f8fd5f556604fdc7"
+  ],
+  "ok": true
+ },
+ {
+  "cmd": "cairn combine shares/share-{1,3,5}.cairn --exec sha256sum",
+  "out": [
+   "52d67e267ddf3fde80e64dcfd0896b1401b7a5b2f27e9b96b4c1f7006873e752  -",
+   "cairn: integrity verified; recovered with shares 1, 3, 5"
+  ],
+  "ok": true
+ },
+ {
+  "cmd": "cairn combine shares/share-{2,3,4}.cairn --exec sha256sum",
+  "out": [
+   "52d67e267ddf3fde80e64dcfd0896b1401b7a5b2f27e9b96b4c1f7006873e752  -",
+   "cairn: integrity verified; recovered with shares 2, 3, 4"
+  ],
+  "ok": true
+ },
+ {
+  "cmd": "cp shares/share-1.cairn stolen-1.cairn   # an attacker copies share 1",
+  "out": [],
+  "ok": true
+ },
+ {
+  "cmd": "printf '\\x01' | dd of=shares/share-1.cairn bs=1 seek=700 conv=notrunc   # custodian 1 cheats",
+  "out": [],
+  "ok": true
+ },
+ {
+  "cmd": "cairn combine shares/share-{1,2,3}.cairn --exec sha256sum",
+  "out": [
+   "cairn: error: integrity check failed: shares were tampered with or are inconsistent"
+  ],
+  "ok": false
+ },
+ {
+  "cmd": "cairn combine shares/share-{1,2,3,4}.cairn --exec sha256sum",
+  "out": [
+   "52d67e267ddf3fde80e64dcfd0896b1401b7a5b2f27e9b96b4c1f7006873e752  -",
+   "cairn: integrity verified; recovered with shares 2, 3, 4",
+   "cairn: WARNING inconsistent share(s): 1 (tampered, forged or stale)"
+  ],
+  "ok": true
+ },
+ {
+  "cmd": "cp stolen-1.cairn shares/share-1.cairn   # restore the honest file",
+  "out": [],
+  "ok": true
+ },
+ {
+  "cmd": "cairn refresh shares/share-*.cairn",
+  "out": [
+   "cairn: refreshed 5 share(s) to epoch 1"
+  ],
+  "ok": true
+ },
+ {
+  "cmd": "cairn combine stolen-1.cairn shares/share-{2,3}.cairn --exec sha256sum",
+  "out": [
+   "cairn: error: shares are from different refresh epochs (0 to 1)"
+  ],
+  "ok": false
+ }
+]

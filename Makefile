@@ -3,7 +3,7 @@ CARGO ?= cargo
 PY    ?= python3 -I
 LAB   := target/release/cairn-lab
 
-.PHONY: verify build lint test kat lab attacks ctgrind asm miri figures paper nodash clean
+.PHONY: verify build lint test kat lab attacks ctgrind asm miri figures paper nodash clean video video-draft
 
 verify: lint build test kat lab attacks ctgrind asm figures paper nodash
 	@echo "== all checks passed"
@@ -52,3 +52,10 @@ nodash:
 clean:
 	$(CARGO) clean
 	cd paper && latexmk -C
+
+video: build
+	python3 video/capture_demo.py
+	python3 video/build.py
+
+video-draft: build
+	python3 video/build.py --draft
