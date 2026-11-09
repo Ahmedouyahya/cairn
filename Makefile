@@ -1,0 +1,51 @@
+# `make verify` reproduces every number quoted in the paper and the README.
+CARGO ?= cargo
+PY    ?= python3 -I
+LAB   := target/release/cairn-lab
+
+.PHONY: verify build lint test kat lab attacks ctgrind miri figures paper nodash clean
+
+verify: lint build test kat lab attacks ctgrind figures paper nodash
+	@echo "== all checks passed"
+
+build:
+	$(CARGO) build --release --workspace
+
+lint:
+	$(CARGO) fmt --all --check
+	$(CARGO) clippy --workspace --all-targets -- -D warnings
+
+test:
+	$(CARGO) test --release --workspace
+
+kat:
+	$(PY) reference/cairn_ref.py
+	$(PY) reference/gen_kat.py
+	$(CARGO) test --release -p cairn-core --test kat
+
+lab: build
+	$(LAB) all
+
+attacks: build
+	$(PY) attacks/tompa_woll.py
+	$(PY) attacks/mobile_adversary.py
+
+ctgrind: build
+	tools/ctgrind.sh
+
+miri:
+	PROPTEST_CASES=8 PROPTEST_DISABLE_FAILURE_PERSISTENCE=1 MIRIFLAGS=-Zmiri-disable-isolation \
+	  $(CARGO) +nightly miri test -p cairn-core --lib
+
+figures:
+	uv run --with matplotlib --with numpy python paper/figures.py
+
+paper: figures
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error cairn.tex
+
+nodash:
+	tools/nodash.sh
+
+clean:
+	$(CARGO) clean
+	cd paper && latexmk -C

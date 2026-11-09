@@ -1,0 +1,297 @@
+{
+  "experiment": "dudect",
+  "pass": true,
+  "result": {
+    "rows": [
+      {
+        "campaign": {
+          "crops": [
+            {
+              "crop": 1.0,
+              "mean_fixed": 78.49599919973465,
+              "mean_random": 78.87869842301056,
+              "t": -2.0517180399816297
+            },
+            {
+              "crop": 0.99,
+              "mean_fixed": 75.76752728058153,
+              "mean_random": 75.76295286228266,
+              "t": 0.40642187025407306
+            },
+            {
+              "crop": 0.95,
+              "mean_fixed": 74.97177320871064,
+              "mean_random": 74.96692783830491,
+              "t": 0.516968517417765
+            },
+            {
+              "crop": 0.9,
+              "mean_fixed": 74.0153256620194,
+              "mean_random": 74.00998723103841,
+              "t": 0.6621406292560967
+            },
+            {
+              "crop": 0.75,
+              "mean_fixed": 72.60947562274426,
+              "mean_random": 72.60770483325304,
+              "t": 0.2517631173856493
+            },
+            {
+              "crop": 0.5,
+              "mean_fixed": 69.93546668681056,
+              "mean_random": 69.93048675158242,
+              "t": 0.8533851336667736
+            }
+          ],
+          "max_abs_t": 2.0517180399816297,
+          "median_cycles": 74,
+          "samples": 2000000
+        },
+        "implementation": "cairn",
+        "leak_detected": false,
+        "operation": "Fp127 multiplication"
+      },
+      {
+        "campaign": {
+          "crops": [
+            {
+              "crop": 1.0,
+              "mean_fixed": 62.67106409583179,
+              "mean_random": 1915.2026411416252,
+              "t": -1927.9098220837116
+            },
+            {
+              "crop": 0.99,
+              "mean_fixed": 62.526866715282374,
+              "mean_random": 1848.8287055357978,
+              "t": -8836.754945662942
+            },
+            {
+              "crop": 0.95,
+              "mean_fixed": 62.52450442952183,
+              "mean_random": 1810.9239244106673,
+              "t": -10495.33033109887
+            },
+            {
+              "crop": 0.9,
+              "mean_fixed": 62.52450442952183,
+              "mean_random": 1777.9658076587457,
+              "t": -11505.524821448895
+            },
+            {
+              "crop": 0.75,
+              "mean_fixed": 62.51900609511473,
+              "mean_random": 1696.6363533022281,
+              "t": -12670.420090412543
+            },
+            {
+              "crop": 0.5,
+              "mean_fixed": 62.50324216069536,
+              "mean_random": 1349.6710182767629,
+              "t": -980.1481252155036
+            }
+          ],
+          "max_abs_t": 12670.420090412543,
+          "median_cycles": 1376,
+          "samples": 2000000
+        },
+        "implementation": "naive",
+        "leak_detected": true,
+        "operation": "double-and-add multiplication"
+      },
+      {
+        "campaign": {
+          "crops": [
+            {
+              "crop": 1.0,
+              "mean_fixed": 6357.31987658527,
+              "mean_random": 6363.860023559111,
+              "t": -0.5822534394002066
+            },
+            {
+              "crop": 0.99,
+              "mean_fixed": 6208.318163422234,
+              "mean_random": 6208.26666935579,
+              "t": 0.018157392494647085
+            },
+            {
+              "crop": 0.95,
+              "mean_fixed": 6117.8121917288545,
+              "mean_random": 6117.287879106312,
+              "t": 0.2660662350404929
+            },
+            {
+              "crop": 0.9,
+              "mean_fixed": 6064.026053844619,
+              "mean_random": 6064.967289253463,
+              "t": -0.5331546624806786
+            },
+            {
+              "crop": 0.75,
+              "mean_fixed": 5951.765024551693,
+              "mean_random": 5952.70236877411,
+              "t": -0.6106021015511001
+            },
+            {
+              "crop": 0.5,
+              "mean_fixed": 5791.818102611823,
+              "mean_random": 5791.569580757899,
+              "t": 0.18216140988095134
+            }
+          ],
+          "max_abs_t": 0.6106021015511001,
+          "median_cycles": 6114,
+          "samples": 200000
+        },
+        "implementation": "cairn",
+        "leak_detected": false,
+        "operation": "Fp127 inversion (Fermat)"
+      },
+      {
+        "campaign": {
+          "crops": [
+            {
+              "crop": 1.0,
+              "mean_fixed": 159.6919239476679,
+              "mean_random": 88736.54944396802,
+              "t": -883.944081607136
+            },
+            {
+              "crop": 0.99,
+              "mean_fixed": 159.6919239476679,
+              "mean_random": 86175.74893556465,
+              "t": -2322.0145669309222
+            },
+            {
+              "crop": 0.95,
+              "mean_fixed": 159.6919239476679,
+              "mean_random": 84039.74846687056,
+              "t": -2679.9110682429096
+            },
+            {
+              "crop": 0.9,
+              "mean_fixed": 159.6919239476679,
+              "mean_random": 82109.10927073803,
+              "t": -2873.4460823693657
+            },
+            {
+              "crop": 0.75,
+              "mean_fixed": 159.6919239476679,
+              "mean_random": 77188.2975407538,
+              "t": -2967.620111830563
+            },
+            {
+              "crop": 0.5,
+              "mean_fixed": 159.6919239476679,
+              "mean_random": 56012.999999999985,
+              "t": -344.4787909990411
+            }
+          ],
+          "max_abs_t": 2967.620111830563,
+          "median_cycles": 58404,
+          "samples": 200000
+        },
+        "implementation": "naive",
+        "leak_detected": true,
+        "operation": "extended Euclid inversion"
+      },
+      {
+        "campaign": {
+          "crops": [
+            {
+              "crop": 1.0,
+              "mean_fixed": 26599.910844869988,
+              "mean_random": 26586.686804959525,
+              "t": 0.28006578627663664
+            },
+            {
+              "crop": 0.99,
+              "mean_fixed": 25945.86624165176,
+              "mean_random": 25944.32395644276,
+              "t": 0.12342744710225174
+            },
+            {
+              "crop": 0.95,
+              "mean_fixed": 25583.291059654734,
+              "mean_random": 25587.98922348147,
+              "t": -0.4731810265735098
+            },
+            {
+              "crop": 0.9,
+              "mean_fixed": 25286.131975850374,
+              "mean_random": 25296.784088642533,
+              "t": -1.2502574702506541
+            },
+            {
+              "crop": 0.75,
+              "mean_fixed": 24721.5523128633,
+              "mean_random": 24720.36215186657,
+              "t": 0.1692232164997477
+            },
+            {
+              "crop": 0.5,
+              "mean_fixed": 23950.552705298687,
+              "mean_random": 23949.779419398616,
+              "t": 0.13052595667253192
+            }
+          ],
+          "max_abs_t": 1.2502574702506541,
+          "median_cycles": 25342,
+          "samples": 200000
+        },
+        "implementation": "cairn",
+        "leak_detected": false,
+        "operation": "reconstruct + AMD verify (3-of-5, ell=8)"
+      },
+      {
+        "campaign": {
+          "crops": [
+            {
+              "crop": 1.0,
+              "mean_fixed": 16394.303047302372,
+              "mean_random": 25545.901431508963,
+              "t": -218.0950233012013
+            },
+            {
+              "crop": 0.99,
+              "mean_fixed": 15810.446695376075,
+              "mean_random": 24739.093643392436,
+              "t": -819.3367108071963
+            },
+            {
+              "crop": 0.95,
+              "mean_fixed": 15751.381539459962,
+              "mean_random": 24151.695523694885,
+              "t": -1056.506376881484
+            },
+            {
+              "crop": 0.9,
+              "mean_fixed": 15731.733619043605,
+              "mean_random": 23758.570370279383,
+              "t": -1126.3927623211073
+            },
+            {
+              "crop": 0.75,
+              "mean_fixed": 15704.784222265178,
+              "mean_random": 22953.315337565422,
+              "t": -1117.603957267167
+            },
+            {
+              "crop": 0.5,
+              "mean_fixed": 15628.737980694816,
+              "mean_random": 21017.791737794465,
+              "t": -788.0081470706035
+            }
+          ],
+          "max_abs_t": 1126.3927623211073,
+          "median_cycles": 21352,
+          "samples": 200000
+        },
+        "implementation": "naive",
+        "leak_detected": true,
+        "operation": "plain Shamir reconstruct"
+      }
+    ],
+    "threshold": 4.5
+  }
+}

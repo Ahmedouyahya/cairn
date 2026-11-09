@@ -15,6 +15,9 @@ use alloc::vec;
 use alloc::vec::Vec;
 use zeroize::{Zeroize, Zeroizing};
 
+use core::ops::Not;
+
+use crate::ct::ct_is_nonzero_u128;
 use crate::field::Fp127;
 use crate::{Error, Field};
 
@@ -50,26 +53,32 @@ pub fn encode(secret: &[u8], min_limbs: usize) -> Result<Zeroizing<Vec<Fp127>>, 
 
 /// Decode limbs back to the secret, rejecting anything that is not the exact
 /// output of [`encode`] (limb out of range, bad length, non-zero padding).
+///
+/// Secret bytes never drive a branch: the range and padding checks are
+/// accumulated with OR and only the final verdict is declassified. The
+/// length prefix *is* declassified, because the length of the returned
+/// secret is visible to the caller anyway.
 pub fn decode(limbs: &[Fp127]) -> Result<Zeroizing<Vec<u8>>, Error> {
     let mut buf = Zeroizing::new(Vec::with_capacity(limbs.len() * LIMB_BYTES));
+    let mut bad: u8 = 0;
     for limb in limbs {
         let mut wide = limb.to_u128().to_be_bytes();
-        if wide[0] != 0 {
-            wide.zeroize();
-            return Err(Error::Malformed("limb exceeds 120 bits"));
-        }
+        bad |= wide[0];
         buf.extend_from_slice(&wide[1..]);
         wide.zeroize();
     }
     if buf.len() < 2 {
         return Err(Error::Malformed("empty encoding"));
     }
-    let len = u16::from_be_bytes([buf[0], buf[1]]) as usize;
+    let len = u16::from_be_bytes([buf[0], buf[1]]) as usize; // declassified
     if len + 2 > buf.len() {
         return Err(Error::Malformed("length prefix exceeds encoding"));
     }
-    if buf[2 + len..].iter().any(|&b| b != 0) {
-        return Err(Error::Malformed("non-zero padding"));
+    for &b in &buf[2 + len..] {
+        bad |= b;
+    }
+    if !ct_is_nonzero_u128(bad as u128).not().declassify() {
+        return Err(Error::Malformed("limb out of range or non-zero padding"));
     }
     Ok(Zeroizing::new(buf[2..2 + len].to_vec()))
 }

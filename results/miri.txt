@@ -1,0 +1,1 @@
+cargo +nightly miri test -p cairn-core --lib (PROPTEST_CASES=8): 35 passed, 0 failed, no undefined behaviour reported

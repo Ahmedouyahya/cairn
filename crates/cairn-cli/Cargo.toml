@@ -1,8 +1,18 @@
 [package]
 name = "cairn-cli"
+description = "cairn: threshold custody of master keys with the CAIRN scheme"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish = false
 
+[[bin]]
+name = "cairn"
+path = "src/main.rs"
+
 [dependencies]
+cairn-core = { path = "../cairn-core" }
+clap = { version = "4", features = ["derive"] }
+getrandom = "0.3"
+libc = "0.2"
+zeroize = { version = "1.8", features = ["alloc"] }

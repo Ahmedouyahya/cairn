@@ -1,0 +1,36 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Install Valgrind
+        run: sudo apt-get update && sudo apt-get install -y valgrind
+      - name: Lint
+        run: make lint
+      - name: Unit, property and cross-implementation tests
+        run: make test kat
+      - name: Exhaustive lab (secrecy, AMD, refresh, leakage)
+        run: |
+          cargo build --release -p cairn-lab
+          for e in secrecy amd refresh leakage; do target/release/cairn-lab $e; done
+      - name: Attack demonstrations
+        run: make attacks
+      - name: ctgrind (Valgrind constant-time check)
+        run: make ctgrind
+      - name: No em dashes
+        run: make nodash
+
+  miri:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri, rust-src
+      - run: make miri CARGO=cargo
