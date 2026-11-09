@@ -16,3 +16,5 @@ paper/*.toc
 /video/build/
 /video/voice/*.mp3
 /video/voice/*.wav
+/video/voice/takes/
+/video/voice/previews/

@@ -83,11 +83,11 @@ The coordinate loop is outside and the share loop inside, so no individual share
 - **An independent Python reference** (an executable specification). Rust and Python produce **byte-identical** share files, before and after refresh.
 - **A lab** that checks every theorem by computation:
   - perfect secrecy: 0 violations over every dealing at small primes;
-  - AMD: worst case equals \((k+1)/p\) exactly over 21.4 million secret/error pairs (the bound is tight);
+  - AMD: worst case equals \((k+1)/p\) exactly over 13.4 million secret/error pairs (the bound is tight);
   - refresh: exact agreement with the lemma;
   - leakage: exact advantage tables.
 - **Side-channel evidence:**
-  - a dudect-style fixed-versus-random Welch test: CAIRN max \(|t|\le 2.1\), while a textbook baseline on the same harness reaches \(|t|\approx 12{,}670\);
+  - a dudect-style fixed-versus-random Welch test: CAIRN stays at a max \(|t|\) of about 2.1 or less in every run (threshold 4.5), while a textbook baseline on the same harness reaches \(|t|\) of 1,000 to about 12,900;
   - ctgrind under Valgrind: 0 secret-dependent branches or addresses in CAIRN, 2,289 errors in the baseline (the positive control);
   - an assembly audit: field multiplication compiles to 72 instructions with **0 conditional jumps and 0 divisions**;
   - Miri for undefined behaviour.

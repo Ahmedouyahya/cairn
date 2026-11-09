@@ -11,8 +11,8 @@ CAIRN splits a master key into `n` shares so that any `t` recover it. Beyond pla
 | **At rest** | stolen share files | Vandermonde sharing | `t-1` shares are independent of the key (perfect secrecy) | exhaustive enumeration, 0 violations in 77,525 dealings |
 | **Over time** | a patient attacker collects `t` shares over months | zero-polynomial proactive refresh | a mobile adversary learns nothing | `attacks/mobile_adversary.py` |
 | **In memory** | cold boot, swap, partial memory disclosure | split-state storage `sigma = <L, R>` | advantage `<= 5 * 2^-128` under 378 bits of arbitrary leakage from a share (32-byte key) | exact leakage tables |
-| **During reconstruction** | timing and cache side channels | constant-time combine | no secret-dependent branch, address or latency | dudect `max|t| <= 2.1` (naive: 12,670), ctgrind 0 errors, assembly audit |
-| **Under manipulation** | a cheating custodian steals the key (Tompa-Woll) | AMD armor | wrong key accepted with probability `<= (k+1)/p ~ 2^-125` | exhaustive and tight over 21.4 M secret/error pairs |
+| **During reconstruction** | timing and cache side channels | constant-time combine | no secret-dependent branch, address or latency | dudect `max|t|` at most about 2.1 in every run, threshold 4.5 (textbook baseline: over 1,000, up to about 12,900), ctgrind 0 errors, assembly audit |
+| **Under manipulation** | a cheating custodian steals the key (Tompa-Woll) | AMD armor | wrong key accepted with probability `<= (k+1)/p ~ 2^-125` | exhaustive and tight over 13.4 M secret/error pairs |
 
 The scheme uses no block cipher, hash function or number-theoretic hardness assumption. All bounds are information-theoretic: they hold against computationally unbounded adversaries, and the only randomness assumption is the operating system's random number generator.
 
@@ -81,7 +81,7 @@ $ make verify      # everything below, then rebuilds the paper from the fresh re
 | Exhaustive AMD bound | `cairn-lab amd` | worst case equals the bound `(k+1)/p` exactly (tight) |
 | Cross-epoch refresh leakage | `cairn-lab refresh` | 2-step: TV = 1 (break); 3-step: TV = `p^-(ell-1)` exactly |
 | Split-state leakage | `cairn-lab leakage` | one half alone: 0; both halves fully read: 1 |
-| Timing (dudect) | `cairn-lab dudect` | CAIRN `max|t|` <= 2.1; textbook baseline up to 12,670 |
+| Timing (dudect) | `cairn-lab dudect` | CAIRN `max|t|` at most about 2.1 in every run (threshold 4.5); textbook baseline over 1,000, up to about 12,900 |
 | ctgrind (Valgrind) | `make ctgrind` | CAIRN: 0 secret-dependent branches or addresses; baseline: 2,289 errors (positive control) |
 | Assembly audit | `make asm` | field ops: 0 conditional jumps, 0 divisions |
 | Undefined behaviour | `make miri` | 35/35 core tests pass under Miri |

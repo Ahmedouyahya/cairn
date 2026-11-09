@@ -22,6 +22,7 @@ OUT = VID / "build"
 NARR = VID / "narration"
 VOICE = VID / "voice"
 LEAD, TAIL, WPS = 0.6, 1.0, 2.45
+TAILS = {"01_hook": 2.2, "10_close": 3.2}  # longer holds on the title cards
 
 SCENES = [
     ("01_hook", "S01Hook"), ("02_windows", "S02Windows"), ("03_field", "S03Field"),
@@ -73,7 +74,7 @@ def main():
     for key, _ in SCENES:
         vf = voice_file(key)
         voice = probe(vf) if vf else len(" ".join(sentences(key)).split()) / WPS
-        durs[key] = {"voice": round(voice, 3), "lead": LEAD, "total": round(LEAD + voice + TAIL, 3), "has_voice": bool(vf)}
+        durs[key] = {"voice": round(voice, 3), "lead": LEAD, "total": round(LEAD + voice + TAILS.get(key, TAIL), 3), "has_voice": bool(vf)}
     (OUT / "durations.json").write_text(json.dumps(durs, indent=1) + "\n")
     total = sum(d["total"] for d in durs.values())
     print(f"total length {total/60:.0f}:{total%60:04.1f}  (voice clips: {sum(d['has_voice'] for d in durs.values())}/10)")
@@ -92,7 +93,9 @@ def main():
         out = OUT / f"part_{key}.mp4"
         if vf:
             ms = int(LEAD * 1000)
-            audio = ["-i", str(vf), "-filter_complex", f"[1:a]adelay={ms}|{ms},apad[a]", "-map", "0:v", "-map", "[a]"]
+            audio = ["-i", str(vf), "-filter_complex",
+                     f"[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,aresample=44100,adelay={ms}|{ms},apad[a]",
+                     "-map", "0:v", "-map", "[a]"]
         else:
             audio = ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a"]
         sh(["ffmpeg", "-y", "-v", "error", "-i", str(video), *audio, "-t", str(d["total"]),

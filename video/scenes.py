@@ -155,13 +155,13 @@ class S01Hook(Narrated):
         self.play(FadeIn(cap2), run_time=0.5)
 
         self.at(2)
-        self.play(*[FadeOut(m) for m in [tokens, arrows, rebuilt, cap1, cap2]], run_time=0.9)
-
-        self.at(3)
+        self.play(*[FadeOut(m) for m in [tokens, arrows, rebuilt, cap1, cap2]], run_time=0.7)
         stack = cairn_stack(1.1).shift(DOWN * 1.6)
         self.play(LaggedStart(*[FadeIn(s, shift=0.6 * DOWN) for s in stack], lag_ratio=0.25), run_time=1.6)
+
+        self.at(3)
         title = T("CAIRN", 92, INK).next_to(stack, UP, buff=0.5)
-        self.play(Write(title), run_time=1.0)
+        self.play(Write(title), run_time=0.8)
         sub = T("information-theoretic threshold custody of master keys", 28, INK2).next_to(title, UP, buff=0.3)
         sub2 = M(r"\text{linear algebra over } \mathbb{F}_{2^{127}-1}", 34, INK2).next_to(stack, DOWN, buff=0.35)
         self.play(FadeIn(sub), FadeIn(sub2), run_time=0.8)
@@ -191,11 +191,15 @@ class S02Windows(Narrated):
         lines, layers = VGroup(), VGroup()
         for i, (w, name, what, layer) in enumerate(rows):
             y = 1.7 - i * 0.95
-            a = T(w, 30, ORANGE).move_to(LEFT * 6.0 + UP * y)
-            b = T(name, 30, INK).next_to(a, RIGHT, buff=0.35).align_to(a, DOWN)
-            c = T(what, 26, INK2).move_to(LEFT * 0.9 + UP * y).align_to(LEFT * 1.6, LEFT)
+            a = T(w, 30, ORANGE).move_to(LEFT * 6.3 + UP * y)
+            b = T(name, 30, INK)
+            b.move_to(LEFT * 5.75 + UP * y, aligned_edge=LEFT).set_y(y)
+            c = T(what, 25, INK2)
+            c.move_to(LEFT * 2.75 + UP * y, aligned_edge=LEFT).set_y(y)
             lines.add(VGroup(a, b, c))
-            layers.add(T(layer, 26, BLUE).move_to(RIGHT * 4.6 + UP * y))
+            lay = T(layer, 25, BLUE)
+            lay.move_to(RIGHT * 2.75 + UP * y, aligned_edge=LEFT).set_y(y)
+            layers.add(lay)
         for i in range(5):
             self.at(2 + i)
             self.play(FadeIn(lines[i], shift=0.2 * RIGHT), run_time=0.6)
@@ -265,21 +269,21 @@ class S04Amd(Narrated):
 
         self.at(3)
         self.play(FadeOut(armor), FadeOut(note), VGroup(tag, err).animate.scale(0.75).to_edge(LEFT, buff=0.6).shift(UP * 0.3), run_time=0.8)
-        ax = Axes(x_range=[-3, 3, 1], y_range=[-3, 3, 1], x_length=5.2, y_length=3.6,
-                  axis_config={"color": MUTED, "include_ticks": False}).to_edge(RIGHT, buff=0.6).shift(DOWN * 0.2)
+        ax = Axes(x_range=[-3, 3, 1], y_range=[-3, 3, 1], x_length=5.0, y_length=2.9,
+                  axis_config={"color": MUTED, "include_ticks": False}).to_edge(RIGHT, buff=0.7).shift(UP * 0.85)
         curve = ax.plot(lambda x: 0.35 * (x + 2.1) * (x - 0.4) * (x - 1.9) + 0.0, x_range=[-2.75, 2.65], color=BLUE)
         roots = VGroup(*[Dot(ax.c2p(r, 0), color=ORANGE, radius=0.08) for r in (-2.1, 0.4, 1.9)])
-        lab = M(r"\deg \le k+1 \;\Rightarrow\; \le k+1 \text{ roots}", 36).next_to(ax, DOWN, buff=0.2)
+        lab = M(r"\deg \le k+1 \;\Rightarrow\; \le k+1 \text{ roots}", 34).next_to(ax, DOWN, buff=0.15)
         self.play(Create(ax), run_time=0.6)
         self.play(Create(curve), run_time=1.0)
         self.play(FadeIn(roots), FadeIn(lab), run_time=0.6)
 
         self.at(4)
-        bound = M(r"\Pr[\text{forgery}] \;\le\; \frac{k+1}{p} \;\approx\; 2^{-125}", 56, BLUE).to_edge(DOWN, buff=0.45)
+        bound = M(r"\Pr[\text{forgery}] \;\le\; \frac{k+1}{p} \;\approx\; 2^{-125}", 52, BLUE).shift(DOWN * 2.25)
         self.play(Write(bound), run_time=1.2)
         amd = load("amd")
         pairs = sum(r["secret_error_pairs"] for r in amd)
-        chk = T(f"checked exhaustively over {pairs:,} secret/error pairs: bound attained exactly", 22, INK2).next_to(bound, UP, buff=0.25)
+        chk = T(f"checked exhaustively over {pairs:,} secret/error pairs: the bound is attained exactly", 22, INK2).next_to(bound, DOWN, buff=0.3)
         self.play(FadeIn(chk), run_time=0.6)
         self.end()
 
@@ -367,18 +371,18 @@ class S07Refresh(Narrated):
         self.play(FadeIn(title), run_time=0.6)
 
         self.at(1)
-        skew = M(r"A^{\top} = -A \;\Rightarrow\; \langle AR, R\rangle = R^{\top}A^{\top}R = -R^{\top}AR = 0", 44).shift(UP * 1.9)
+        skew = M(r"A^{\top} = -A \;\Rightarrow\; \langle AR, R\rangle = R^{\top}A^{\top}R = -R^{\top}AR = 0", 44).shift(UP * 2.35)
         self.play(Write(skew), run_time=1.6)
 
         self.at(2)
-        s1 = M(r"L \leftarrow L + A R", 46).shift(UP * 0.7 + LEFT * 3.4)
+        s1 = M(r"L \leftarrow L + A R", 46).shift(UP * 1.1 + LEFT * 3.4)
         s2 = M(r"R \leftarrow R + B L", 46).next_to(s1, DOWN, buff=0.3).align_to(s1, LEFT)
         lab2 = T("first design: two steps", 24, INK2).next_to(s1, UP, buff=0.25).align_to(s1, LEFT)
         self.play(FadeIn(lab2), Write(s1), run_time=0.8)
         self.play(Write(s2), run_time=0.6)
 
         self.at(3)
-        leak = M(r"\langle L_{\mathrm{new}},\, R_{\mathrm{old}}\rangle = \sigma", 50, ORANGE).shift(RIGHT * 2.8 + UP * 0.35)
+        leak = M(r"\langle L_{\mathrm{new}},\, R_{\mathrm{old}}\rangle = \sigma", 50, ORANGE).shift(RIGHT * 2.8 + UP * 0.75)
         self.play(Write(leak), run_time=1.0)
         self.at(4)
         self.play(Indicate(leak, color=ORANGE), run_time=0.9)
@@ -390,19 +394,20 @@ class S07Refresh(Narrated):
             if (r["p"], r["ell"]) not in configs:
                 configs.append((r["p"], r["ell"]))
         get = lambda c, s: next(r for r in rows if (r["p"], r["ell"]) == c and r["refresh"] == s)  # noqa: E731
-        base = DOWN * 3.15
-        H = 2.0  # height for TV = 1 (linear scale)
+        base = DOWN * 3.2
+        H = 1.75  # log scale: 10^-2 at the axis, 10^0 at height H
+        hl = lambda v: max(0.03, H * (np.log10(v) + 2) / 2)  # noqa: E731
         bars2, bars3, ticks, labels, vals = VGroup(), VGroup(), VGroup(), VGroup(), VGroup()
         for i, c in enumerate(configs):
             x = LEFT * 4.5 + RIGHT * 3.0 * i
             v2 = get(c, "2-step")["tv_old_R_new_L_nonzero_values"]
             v3 = get(c, "3-step")["tv_old_R_new_L_nonzero_values"]
-            b2 = Rectangle(width=0.7, height=max(H * v2, 0.02), color=ORANGE, fill_color=ORANGE, fill_opacity=1, stroke_width=0)
+            b2 = Rectangle(width=0.7, height=hl(v2), color=ORANGE, fill_color=ORANGE, fill_opacity=1, stroke_width=0)
             b2.move_to(base + x + LEFT * 0.42, aligned_edge=DOWN)
-            b3 = Rectangle(width=0.7, height=max(H * v3, 0.02), color=BLUE, fill_color=BLUE, fill_opacity=1, stroke_width=0)
+            b3 = Rectangle(width=0.7, height=hl(v3), color=BLUE, fill_color=BLUE, fill_opacity=1, stroke_width=0)
             b3.move_to(base + x + RIGHT * 0.42, aligned_edge=DOWN)
             pred = c[0] ** (-(c[1] - 1))
-            tick = Line(LEFT * 0.42, RIGHT * 0.42, color=INK, stroke_width=4).move_to(base + x + RIGHT * 0.42 + UP * H * pred)
+            tick = Line(LEFT * 0.42, RIGHT * 0.42, color=INK, stroke_width=4).move_to(base + x + RIGHT * 0.42 + UP * hl(pred))
             bars2.add(b2)
             bars3.add(b3)
             ticks.add(tick)
@@ -413,7 +418,9 @@ class S07Refresh(Narrated):
         self.at(5)
         self.play(Create(axis), FadeIn(labels), run_time=0.5)
         self.play(LaggedStart(*[GrowFromEdge(b, DOWN) for b in bars2], lag_ratio=0.15), run_time=1.0)
-        one = T("TV = 1: total break", 26, ORANGE).next_to(bars2[-1], RIGHT, buff=0.25).shift(UP * 0.6)
+        one = T("2-step refresh: TV = 1, a total break", 24, ORANGE).move_to(base + UP * (H + 0.35) + LEFT * 3.0)
+        logn = T("log scale", 18, MUTED).move_to(base + UP * (H + 0.35) + RIGHT * 5.4)
+        self.add(logn)
         self.play(FadeIn(one), run_time=0.5)
 
         self.at(6)
@@ -524,6 +531,10 @@ class S09Demo(Narrated):
 
         def show(i, typing=0.9):
             s = steps[i]
+            if s.get("note"):
+                note = T("# " + s["note"], 18, MUTED, font=MONO)
+                emit(note)
+                self.play(FadeIn(note), run_time=0.25)
             cmd = T("$ " + s["cmd"], 19, INK, font=MONO)
             emit(cmd)
             self.play(AddTextLetterByLetter(cmd, run_time=typing))
@@ -563,7 +574,7 @@ class S10Close(Narrated):
             f"perfect secrecy: 0 violations in {sum(r['dealings_enumerated'] for r in sec):,} enumerated dealings",
             f"AMD bound: exhaustive over {sum(r['secret_error_pairs'] for r in amd):,} pairs, tight",
             "Python reference matches Rust byte for byte",
-            "timing: CAIRN max |t| <= 2.1, baseline up to 12,670",
+            f"timing: CAIRN max |t| = {max(r['campaign']['max_abs_t'] for r in load('dudect')['rows'] if r['implementation'] == 'cairn'):.1f}, baseline up to {max(r['campaign']['max_abs_t'] for r in load('dudect')['rows'] if r['implementation'] == 'naive'):,.0f}",
             "Valgrind: 0 secret-dependent branches",
             "Miri: no undefined behaviour",
         ]
