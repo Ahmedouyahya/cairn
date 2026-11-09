@@ -1,5 +1,7 @@
 # YouTube upload
 
+**Live:** https://youtu.be/_m6iQ6-VnBc (public)
+
 **Title:** CAIRN: information-theoretic, leakage-resilient threshold custody of master keys
 
 **Visibility:** Public or Unlisted (either works for Devpost).

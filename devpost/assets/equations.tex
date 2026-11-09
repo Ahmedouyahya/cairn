@@ -1,0 +1,28 @@
+\documentclass[border=10pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{libertinust1math}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\definecolor{cairn}{HTML}{2a78d6}
+\definecolor{ink2}{HTML}{52514e}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\TV}{\mathrm{TV}}
+\pagestyle{empty}
+\begin{document}
+\color{black}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{@{}r@{\hspace{9mm}}l@{}}
+\textcolor{cairn}{\textbf{L1}} & $\displaystyle s=(s_1,\dots,s_k)\in\F_p^k,\qquad s_i<2^{120},\qquad p=2^{127}-1$\\[2mm]
+\textcolor{cairn}{\textbf{L2}} & $\displaystyle \tau=x^{k+2}+\sum_{i=1}^{k}s_i x^i,\qquad a=(s_1,\dots,s_k,x,\tau)$\\[2mm]
+\textcolor{cairn}{\textbf{L3}} & $\displaystyle \Sigma=C\,V,\qquad V=\big[\,j^m\,\big]_{0\le m<t,\ 1\le j\le n}$\\[2mm]
+\textcolor{cairn}{\textbf{L4}} & $\displaystyle \sigma=\ip{L}{R}=\sum_{i=1}^{\ell}L_iR_i,\qquad (L,R)\in\F_p^{\ell}\times\F_p^{\ell},\ \ \ell=8$\\[2mm]
+\textcolor{cairn}{\textbf{L5}} & $\displaystyle A^{\top}=-A\ \Longrightarrow\ \ip{AR}{R}=0,\qquad L\leftarrow L+AR,\ \ R\leftarrow R+BL,\ \ L\leftarrow L+CR$\\[2mm]
+\textcolor{cairn}{\textbf{L6}} & $\displaystyle \hat a_c=\sum_{i=1}^{\ell}\ \sum_{j\in T}(\lambda_jL_{j,c,i})\,R_{j,c,i},\qquad \lambda_j=\prod_{m\in T\setminus\{j\}}\frac{m}{m-j}$\\[4mm]
+\multicolumn{2}{@{}l@{}}{\textcolor{cairn}{\textbf{Leakage}} $\displaystyle \TV(\Lambda_\sigma,\Lambda_{\sigma'})\le\big(1+\tfrac1p\big)\,2^{(\lambda_L+\lambda_R)/2}\,p^{-(\ell-3)/2}$}\\[2mm]
+\multicolumn{2}{@{}l@{}}{\textcolor{cairn}{\textbf{Cross-epoch}} $\displaystyle \TV\big((R_{\text{old}},L_{\text{new}})_\sigma,(R_{\text{old}},L_{\text{new}})_{\sigma'}\big)=p^{-(\ell-1)}\approx2^{-889}$}\\[2mm]
+\multicolumn{2}{@{}l@{}}{\textcolor{cairn}{\textbf{AMD bound}} $\displaystyle \Pr_x\big[\tau+g=f(x+e,s+d)\big]\le\frac{k+1}{p}\approx2^{-125}$}\\
+\end{tabular}
+\end{document}

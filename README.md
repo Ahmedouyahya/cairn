@@ -4,6 +4,8 @@ Threshold custody of master keys with information-theoretic security, using only
 
 > **Status.** Research prototype written for the *Mathematics for Systems Security* hackathon (Cryptographer track). The design and its proofs are in [`paper/cairn.pdf`](paper/cairn.pdf). The code has not been independently audited; see [SECURITY.md](SECURITY.md) before using it for real keys.
 
+> **Video:** [CAIRN in five minutes](https://youtu.be/_m6iQ6-VnBc) · **Devpost:** [submission page](https://devpost.com/software/cairn-information-theoretic-threshold-custody)
+
 CAIRN splits a master key into `n` shares so that any `t` recover it. Beyond plain secret sharing, it addresses five ways a shared key is exposed in practice. Each guarantee below is proved in the paper under the threat model of Section 2, and each has a reproducible check:
 
 | Window | What goes wrong with textbook Shamir | CAIRN layer | Guarantee (proved in the [paper](paper/cairn.pdf)) | Evidence |
